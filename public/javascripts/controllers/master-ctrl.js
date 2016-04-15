@@ -78,38 +78,36 @@ function MasterCtrl($scope, $cookieStore, $mdSidenav, $timeout) {
 	
 	$scope.toggleLeft = $scope.buildDelayedToggler('left');	
 	
-	$scope.menues = [	{	"name": 	"Dashboard",
-							"url":	"#",
-							"type":	"item"
-						}, 
-						{
+	$scope.dashboard = {	"name": 	"Dashboard",
+							"url":		"/#",
+							"type":		"item",
+							"iconUrl": 	"/images/dash.svg",							
+						}; 
+	$scope.rooms =		{
 							"name": 	"Rooms",
-							"url":	"#",
-							"type":	"menu"
-						} ];
-	$scope.menues[1].items =  [{	"name": "Room1",
-											"url":	"#",
+							"url":		"#",
+							"type":		"menu"
+						};
+	$scope.rooms.items =  [{	"name": "Room1",
+											"url":	"/#",
 											"type":	"item"
 									   }, {	
 											"name": "Room2",
-											"url":	"#",
+											"url":	"/#",
 											"type":	"item"
 									   },{	
 											"name": "Room3",
-											"url":	"#",
+											"url":	"/#",
 											"type":	"item"
 									   } ];
+	$scope.settings = {	"name": 	"Settings",
+							"url":		"/#",
+							"type":		"item",
+							"iconUrl": 	"/images/settings.svg",							
+						}; 									
+
 	
 }
 
-angular.module('RDash').controller('LeftCtrl', function ($scope, $timeout, $mdSidenav, $log) {
-    $scope.close = function () {
-      // Component lookup should always be available since we are not using `ng-if`
-      $mdSidenav('left').close()
-        .then(function () {
-          $log.debug("close LEFT is done");
-        });
-    };
-  })
-  
+
     

@@ -41,13 +41,33 @@
         class="md-sidenav-left"
         md-component-id="left"
         md-is-locked-open="$mdMedia('gt-md')"
-        md-disable-backdrop
         md-whiteframe="4">
       <md-toolbar class="material-theme-light material-medium-tall">
         <h1 class="md-toolbar-tools">DanHome</h1>
       </md-toolbar>
-	  <md-content layout-padding ng-controller="LeftCtrl">
-		<!-- CONTENIDO DEL SIDENAV -->      
+	  <md-content>
+		<!-- CONTENIDO DEL SIDENAV -->
+		
+		<md-list flex>
+			<md-list-item class="md-2-line" ng-click="null" ng-href="{{menu.url}}">
+				<p> {{ dashboard.name }} </p>
+				<md-icon md-svg-icon="{{dashboard.iconUrl}}" ></md-icon>
+			</md-list-item>
+			
+			<md-divider></md-divider>
+			<md-subheader class="md-no-sticky">{{rooms.name}}</md-subheader>
+			<md-list-item ng-repeat="room in rooms.items" ng-click="null" ng-href="{{room.url}}" class="md-no-style" >
+				<p> {{ room.name }} </p>
+				<md-icon md-svg-icon="{{room.iconUrl}}" ></md-icon>
+			</md-list-item>
+
+			<md-divider></md-divider>
+			<md-list-item class="md-2-line" ng-click="null" ng-href="{{menu.url}}">
+				<p> {{ settings.name }} </p>
+				<md-icon md-svg-icon="{{settings.iconUrl}}" ></md-icon>
+			</md-list-item>
+			
+		</md-list>
 	  </md-content>
     </md-sidenav>
 

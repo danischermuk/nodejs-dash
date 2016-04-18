@@ -13,11 +13,11 @@
   <!-- SCRIPTS -->
   <!-- build:js lib/js/main.min.js -->
   <script type="text/javascript" src="bower_components/angular/angular.js"></script>
-  <script type="text/javascript" src="/bower_components/angular-animate/angular-animate.js"></script>
+  <script type="text/javascript" src="bower_components/angular-animate/angular-animate.js"></script>
   <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
   <script type="text/javascript" src="bower_components/angular-cookies/angular-cookies.min.js"></script>
   <script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
-  <script type="text/javascript" src="/bower_components/angular-aria/angular-aria.js"></script>
+  <script type="text/javascript" src="bower_components/angular-aria/angular-aria.js"></script>
   <script type="text/javascript" src="bower_components/angular-material/angular-material.min.js"></script>
   
   <!-- endbuild -->
@@ -42,25 +42,26 @@
 		<!-- CONTENIDO DEL SIDENAV -->
 		
 		<md-list flex>
-			<md-list-item ng-click="null" ng-href="{{menu.url}}">
+			<md-list-item ng-click="null" g-click="go(dashboard.url)">
 				<p> {{ dashboard.name }} </p>
 				<md-icon md-svg-icon="{{dashboard.iconUrl}}" ></md-icon>
 			</md-list-item>
 			
 			<md-divider></md-divider>
 			<md-subheader class="md-no-sticky">{{rooms.name}}</md-subheader>
-			<md-list-item ng-repeat="room in rooms.items" ng-click="null" ng-href="{{room.url}}">
+			<md-list-item ng-repeat="room in rooms.items" ng-click="go(room.url)" >
 				<p> {{ room.name }} </p>
 				<md-icon md-svg-icon="{{room.iconUrl}}" ></md-icon>
 			</md-list-item>
 
 			<md-divider></md-divider>
-			<md-list-item ng-click="null" ng-href="{{menu.url}}">
+			<md-list-item ng-click="null" g-click="go(settings.url)">
 				<p> {{ settings.name }} </p>
 				<md-icon md-svg-icon="{{settings.iconUrl}}" ></md-icon>
 			</md-list-item>
 			
 		</md-list>
+		
 	  </md-content>
     </md-sidenav>
 

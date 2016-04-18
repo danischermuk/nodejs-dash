@@ -1,3 +1,8 @@
-<div class="row">
-  
+<div class=" alerts-container" data-ng-controller="AlertsCtrl" data-ng-show="alerts.length">
+  <div>
+    <uib-alert data-ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+  </div>
+</div>
+<div>
+	tables
 </div>

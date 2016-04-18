@@ -3,9 +3,9 @@
  */
 
 angular.module('RDash')
-    .controller('MasterCtrl', ['$scope', '$cookieStore','$mdSidenav', '$timeout', MasterCtrl]);
+    .controller('MasterCtrl', ['$scope',  '$cookieStore', '$location','$mdSidenav', '$timeout', MasterCtrl]);
 
-function MasterCtrl($scope, $cookieStore, $mdSidenav, $timeout) {
+function MasterCtrl($scope, $cookieStore, $location, $mdSidenav, $timeout) {
     /**
      * Sidebar Toggle & Cookie Control
      */
@@ -15,6 +15,11 @@ function MasterCtrl($scope, $cookieStore, $mdSidenav, $timeout) {
         return window.innerWidth;
     };
 
+	 $scope.go = function ( path ) {
+		 console.log(path);
+		$location.path( path );
+	};
+	
     $scope.$watch($scope.getWidth, function(newValue, oldValue) {
         if (newValue >= mobileView) {
             if (angular.isDefined($cookieStore.get('toggle'))) {
@@ -85,11 +90,11 @@ function MasterCtrl($scope, $cookieStore, $mdSidenav, $timeout) {
 						}; 
 	$scope.rooms =		{
 							"name": 	"Rooms",
-							"url":		"#",
+							"url":		"/#",
 							"type":		"menu"
 						};
 	$scope.rooms.items =  [{	"name": "Room1",
-											"url":	"/#",
+											"url":	"/tables",
 											"type":	"item"
 									   }, {	
 											"name": "Room2",

@@ -4,12 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<title>RDash AngularJS</title>
+	<title>MiCasa</title>
   <!-- STYLES -->
   <!-- build:css lib/css/main.min.css -->
   <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="bower_components/font-awesome/css/font-awesome.min.css">
-  <link rel="stylesheet" type="text/css" href="bower_components/rdash-ui/dist/css/rdash.min.css">
   <link rel="stylesheet" type="text/css" href="bower_components/angular-material/angular-material.css">
   <!-- endbuild -->
   <!-- SCRIPTS -->
@@ -26,17 +24,12 @@
   <!-- Custom Scripts -->
   <script type="text/javascript" src="javascripts/module.js"></script>
   <script type="text/javascript" src="javascripts/routes.js"></script>
-  <script type="text/javascript" src="javascripts/directives/loading.js"></script>
-  <script type="text/javascript" src="javascripts/directives/widget.js"></script>
-  <script type="text/javascript" src="javascripts/directives/widget-body.js"></script>
-  <script type="text/javascript" src="javascripts/directives/widget-footer.js"></script>
-  <script type="text/javascript" src="javascripts/directives/widget-header.js"></script>
   <script type="text/javascript" src="javascripts/controllers/alert-ctrl.js"></script>
   <script type="text/javascript" src="javascripts/controllers/master-ctrl.js"></script>
   
 </head>
 <body ng-controller="MasterCtrl">
-<section layout="row" flex>
+<section layout="row" layout-fill flex>
 	<md-sidenav
         class="md-sidenav-left"
         md-component-id="left"
@@ -49,20 +42,20 @@
 		<!-- CONTENIDO DEL SIDENAV -->
 		
 		<md-list flex>
-			<md-list-item class="md-2-line" ng-click="null" ng-href="{{menu.url}}">
+			<md-list-item ng-click="null" ng-href="{{menu.url}}">
 				<p> {{ dashboard.name }} </p>
 				<md-icon md-svg-icon="{{dashboard.iconUrl}}" ></md-icon>
 			</md-list-item>
 			
 			<md-divider></md-divider>
 			<md-subheader class="md-no-sticky">{{rooms.name}}</md-subheader>
-			<md-list-item ng-repeat="room in rooms.items" ng-click="null" ng-href="{{room.url}}" class="md-no-style" >
+			<md-list-item ng-repeat="room in rooms.items" ng-click="null" ng-href="{{room.url}}">
 				<p> {{ room.name }} </p>
 				<md-icon md-svg-icon="{{room.iconUrl}}" ></md-icon>
 			</md-list-item>
 
 			<md-divider></md-divider>
-			<md-list-item class="md-2-line" ng-click="null" ng-href="{{menu.url}}">
+			<md-list-item ng-click="null" ng-href="{{menu.url}}">
 				<p> {{ settings.name }} </p>
 				<md-icon md-svg-icon="{{settings.iconUrl}}" ></md-icon>
 			</md-list-item>
@@ -72,7 +65,7 @@
     </md-sidenav>
 
 	<md-content flex>      
-	
+		<!-- TOOLBAR -->
 		<md-toolbar class="material-theme-light material-medium-tall">
 			<div class="md-toolbar-tools">
 				<md-button class="md-icon-button" ng-click="toggleLeft()" aria-label="Menu" hide-gt-md>
@@ -95,11 +88,11 @@
 			</div>
 		</md-toolbar>
 	
-		
+			<!-- CONTENIDO -->
 		<div layout-padding ui-view></div>
 
      
-    </md-content><!-- End Content Wrapper -->
+    </md-content>
 	</section>
 </body>
 </html>

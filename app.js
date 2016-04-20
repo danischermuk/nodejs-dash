@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var methodOverride = require("method-override");
 var mongoose = require('mongoose');
-
+var Agenda = require('agenda');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var WIFISwitch = require('./models/wifiswitch');
@@ -30,6 +30,35 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/bower_components',  express.static(__dirname + '/bower_components'));
 app.use('/', routes);
 app.use('/users', users);
+
+
+var agenda = new Agenda({db: {address: 'localhost:27017/agenda-example'}});
+
+agenda.define('greet the world', function(job, done) {
+	job.attrs.data.num = job.attrs.data.num+1;
+  console.log(job.attrs.data.num, 'hello world!');
+  done();
+});
+
+agenda.define('view jobs', function(job, done) {
+	agenda.jobs({}, function(err, jobs) {
+	  console.log(jobs);
+	});
+	done();
+});
+
+agenda.on('ready', function() {
+	agenda.cancel({}, function(err, numRemoved) {
+	});
+	agenda.every('10 seconds', 'greet the world', {num: 0});	
+	agenda.start();
+	agenda.jobs({}, function(err, jobs) {
+	  console.log(jobs);
+	});
+	
+});
+
+
 
 // Connect to the beerlocker MongoDB
 // mongoose.connect('mongodb://localhost:27017/wihome');

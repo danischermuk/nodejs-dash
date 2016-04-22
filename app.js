@@ -7,8 +7,12 @@ var bodyParser = require('body-parser');
 var methodOverride = require("method-override");
 var mongoose = require('mongoose');
 var Agenda = require('agenda');
+
 var routes = require('./routes/index');
 var users = require('./routes/users');
+
+var apiAgenda = require('./controllers/api/agenda/apiAgenda');
+
 var WIFISwitch = require('./models/wifiswitch');
 var application_root = __dirname,
     path = require("path");
@@ -28,9 +32,11 @@ app.use(methodOverride());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/bower_components',  express.static(__dirname + '/bower_components'));
+
 app.use('/', routes);
 app.use('/users', users);
 
+app.use('/api/agenda', apiAgenda);
 
 var agenda = new Agenda({db: {address: 'localhost:27017/agenda-example'}});
 
@@ -50,11 +56,11 @@ agenda.define('view jobs', function(job, done) {
 agenda.on('ready', function() {
 	agenda.cancel({}, function(err, numRemoved) {
 	});
-	agenda.every('10 seconds', 'greet the world', {num: 0});	
+/* 	agenda.every('10 seconds', 'greet the world', {num: 0});	
 	agenda.start();
 	agenda.jobs({}, function(err, jobs) {
 	  console.log(jobs);
-	});
+	}); */
 	
 });
 

@@ -3,46 +3,9 @@
  */
 
 angular.module('RDash')
-    .controller('MasterCtrl', ['$scope',  '$cookieStore', '$location','$mdSidenav', '$timeout', MasterCtrl]);
+    .controller('MasterCtrl', ['$scope', '$location','$mdSidenav', '$timeout', MasterCtrl]);
 
-function MasterCtrl($scope, $cookieStore, $location, $mdSidenav, $timeout) {
-    /**
-     * Sidebar Toggle & Cookie Control
-     */
-    var mobileView = 992;
-
-    $scope.getWidth = function() {
-        return window.innerWidth;
-    };
-
-	 $scope.go = function ( path ) {
-		 console.log(path);
-		$location.path( path );
-	};
-	
-    $scope.$watch($scope.getWidth, function(newValue, oldValue) {
-        if (newValue >= mobileView) {
-            if (angular.isDefined($cookieStore.get('toggle'))) {
-                $scope.toggle = ! $cookieStore.get('toggle') ? false : true;
-            } else {
-                $scope.toggle = true;
-            }
-        } else {
-            $scope.toggle = false;
-        }
-
-    });
-
-    $scope.toggleSidebar = function() {
-        $scope.toggle = !$scope.toggle;
-        $cookieStore.put('toggle', $scope.toggle);
-    };
-
-    window.onresize = function() {
-        $scope.$apply();
-    };
-	
-	
+function MasterCtrl($scope, $location, $mdSidenav, $timeout) {
 	/**
      * Supplies a function that will continue to operate until the
      * time is up.

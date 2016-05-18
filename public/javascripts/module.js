@@ -1,1 +1,1 @@
-angular.module('RDash', ['ui.bootstrap', 'ui.router', 'ngCookies', 'ngMaterial']);
+angular.module('RDash', ['ui.bootstrap', 'ui.router', 'ngMaterial']);

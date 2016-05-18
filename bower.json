@@ -22,8 +22,7 @@
     "angular-ui-router": "^0.2.18",
     "angular-material": "^1.0.7",
     "angular-animate": "^1.5.3",
-    "angular": "^1.5.3",
-    "angular-cookies": "^1.5.3"
+    "angular": "^1.5.3"
   },
   "repository": {
     "type": "git",

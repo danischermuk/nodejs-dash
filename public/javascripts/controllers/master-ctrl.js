@@ -6,6 +6,13 @@ angular.module('RDash')
     .controller('MasterCtrl', ['$scope', '$location','$mdSidenav', '$timeout', MasterCtrl]);
 
 function MasterCtrl($scope, $location, $mdSidenav, $timeout) {
+
+    $scope.go = function ( path ) {
+           console.log(path);
+          $location.path( path );
+     };
+
+
 	/**
      * Supplies a function that will continue to operate until the
      * time is up.

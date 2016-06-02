@@ -10,9 +10,12 @@
 
 #include <ESP8266WiFi.h>
 #include <EEPROM.h>
+#include <string.h>
 #include "EEPROMAnything.h"
 #include "CRC.h"
 #include "GeneralConfig.h"
+#include "Parsers.h"
+#include "HTTPResponse.h"
 
 #define DEBUG 1
 
@@ -22,7 +25,7 @@ WiFiServer server(80);
 
 void setup() {
   EEPROM.begin(512);
-  Serial.begin(9600);
+  Serial.begin(115200);
   delay(10);
 
   // prepare GPIO2
@@ -87,37 +90,40 @@ void loop() {
     delay(1);
   }
 
+  int val;
+  String content = "";
   // Read the first line of the request
   String req = client.readStringUntil('\r');
-  Serial.println(req);
-  Serial.println(client.readString());
-  client.flush();
-  
-  // Match the request
-  int val;
-  if (req.indexOf("/gpio/0") != -1)
-    val = 0;
-  else if (req.indexOf("/gpio/1") != -1)
-    val = 1;
-  else {
-    Serial.println("invalid request");
-    client.stop();
-    return;
+  // Ver si es un GET o un POST
+  if (strncmp(req.c_str(), "GET", 3)==0)
+  {
+    // Es un GET, no necesito info adicional
+    client.flush();
+    // Procedo con la API
+    // TODO: separar el manejo de la API
+    if (req.indexOf("/gpio/0") != -1)
+      val = 0;
+    else if (req.indexOf("/gpio/1") != -1)
+      val = 1;
+    else {
+      Serial.println("invalid request");
+      client.stop();
+      return;
+    }
+    // Set GPIO2 according to the request
+    digitalWrite(2, val);
+  }
+  else if (strncmp(req.c_str(), "POST", 4)==0)
+  {
+    req = client.readString();
+    content = ParseContent(req);
+    Serial.println(content);
+    client.flush();
   }
 
-  // Set GPIO2 according to the request
-  digitalWrite(2, val);
-  
+  HTTPSendResponse (client, OK_200, content);
   client.flush();
 
-  // Prepare the response
-  String s = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n<!DOCTYPE HTML>\r\n<html>\r\nGPIO is now ";
-  s += (val)?"high":"low";
-  s += "</html>\n";
-
-  // Send the response to the client
-  client.print(s);
-  delay(1);
   Serial.println("Client disonnected");
 
   // The client will actually be disconnected 

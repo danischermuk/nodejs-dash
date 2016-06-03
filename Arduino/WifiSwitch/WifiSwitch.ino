@@ -17,21 +17,21 @@
 #include "Parsers.h"
 #include "HTTPResponse.h"
 
-#define DEBUG 1
+// #define DEBUG 1
 
 // Create an instance of the server
 // specify the port to listen on as an argument
 WiFiServer server(80);
 
 void setup() {
-  EEPROM.begin(512);
   Serial.begin(115200);
   delay(10);
-
+  EEPROM.begin(512);
+  
   // prepare GPIO2
   pinMode(2, OUTPUT);
   digitalWrite(2, 0);
-
+  
   // Verificando la configuración de EEPROM
   EEPROM_readAnything(GENERALCONFIG_EEPROM_ADDR, GeneralConfig);
   int GeneralConfigCrc = crc((byte*)&GeneralConfig, sizeof(GeneralConfig) - sizeof(GeneralConfig.crc));
@@ -61,18 +61,16 @@ void setup() {
    WiFi.config(GeneralConfig.WifiConfig.ip, GeneralConfig.WifiConfig.gateway, GeneralConfig.WifiConfig.subnet); 
   }
   WiFi.begin(GeneralConfig.WifiConfig.ssid, GeneralConfig.WifiConfig.pass);
-  
   while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
+    delay(100);
     Serial.print(".");
   }
   Serial.println("");
   Serial.println("WiFi connected");
-  
+
   // Start the server
   server.begin();
   Serial.println("Server started");
-
   // Print the IP address
   Serial.println(WiFi.localIP());
 }

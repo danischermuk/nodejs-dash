@@ -34,7 +34,7 @@ void HTTPSendResponse (WiFiClient cli, HTTPResponseType_t responseType, String c
   // Prepare the response
   String s = HTTP_REQUEST_LINE + HTTPRequestLineCode[responseType];
   s += "\n" + HTTP_CONTENT_TYPE;
-  s += "\n" + HTTP_CONTENT_LENGTH + " " + (sizeof(content1)+1);
+  s += "\n" + HTTP_CONTENT_LENGTH + " " + (sizeof(content)+1);
   s += "\r\n\r\n" + content;
   
   cli.print(s);

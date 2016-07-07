@@ -1,0 +1,76 @@
+<div class=" alerts-container" data-ng-controller="AlertsCtrl" data-ng-show="alerts.length">
+	<div>
+		<uib-alert data-ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+	</div>
+</div>
+<div data-ng-controller="SettingsCtrl">
+	<md-button class="md-primary md-raised" ng-click="openBuildingDialog($event)">New Building</md-button>
+
+
+<md-toolbar class="md-priority">
+    <div class="md-toolbar-tools">
+      <h2 class="md-flex">Buildings</h2>
+    </div>
+  </md-toolbar>
+  <md-content flex layout-padding>
+  	<md-card  ng-repeat="dept in buildings" ng-click="editBuilding(dept)">
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">{{dept.name}}</span>
+            <span class="md-subhead">Small</span>
+          </md-card-title-text>
+        </md-card-title>
+      </md-card>
+  </md-content>
+
+
+
+
+
+
+
+
+
+
+
+
+	<!-- Dialog de creación de Building -->
+	<div style="visibility: hidden">
+		<div class="md-dialog-container" id="buildingDialog">
+			<md-dialog layout-padding >
+			<h2>New Building</h2>
+			<form name="buildingForm">
+				<md-input-container class="md-block">
+				<label>Name</label>
+				<input maxlength="30" required md-no-asterisk name="name" ng-model="building.name">
+				<div ng-messages="buildingForm.name.$error">
+					<div ng-message="required">This is required.</div>
+					<div ng-message="maxlength">The name has to be less than 30 characters long.</div>
+				</div>
+			</md-input-container>
+			<md-input-container class="md-block">
+			<label>Address</label>
+			<input maxlength="30" required md-no-asterisk name="address" ng-model="building.address">
+			<div ng-messages="buildingForm.address.$error">
+				<div ng-message="required">This is required.</div>
+				<div ng-message="maxlength">The address has to be less than 30 characters long.</div>
+			</div>
+		</md-input-container>
+		<md-input-container class="md-block">
+		<label>Telephone</label>
+		<input maxlength="15"  md-no-asterisk name="telephone" ng-model="building.telephone">
+		<div ng-messages="buildingForm.telephone.$error">
+			<div ng-message="maxlength">The telephone number has to be less than 15 characters long.</div>
+		</div>
+	</md-input-container>
+</form>
+
+<section layout="row" layout-sm="column" layout-align="space-between center" layout-wrap>
+	<md-button class="md-raised md-warn" ng-click="cancel()">Cancel</md-button>
+	<md-button class="md-raised md-primary" ng-click="createBuilding()">OK</md-button>
+</section>
+
+</md-dialog>
+</div>
+</div>
+</div>

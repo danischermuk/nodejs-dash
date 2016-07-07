@@ -13,3 +13,4 @@ app.service('loginService', ['$http', function($http)
     }  
     return obj;
 }]);
+

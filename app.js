@@ -1,28 +1,46 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var methodOverride = require("method-override");
-var mongoose = require('mongoose');
-var Agenda = require('agenda');
+/****************************DEPENDENCIAS Y MODULOS****************************/
+var express         = require('express');
+var path            = require('path');
+var favicon         = require('serve-favicon');
+var logger          = require('morgan');
+var cookieParser    = require('cookie-parser');
+var bodyParser      = require('body-parser');
+var methodOverride  = require("method-override");
+var mongoose        = require('mongoose');
+var Agenda          = require('agenda');
+var passport        = require('passport');
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
+// Definicion del path
+var application_root = __dirname;
 
-var apiAgenda = require('./controllers/api/agenda/apiAgenda');
+/****************************MODELOS****************************/
+var WIFISwitch      = require('./models/wifiswitch');
+var User            = require('./models/user');
+var Room            = require('./models/room');
+var Building        = require('./models/building');
+var Appliance       = require('./models/appliance');
+var ApplianceGroup  = require('./models/ApplianceGroup');
 
-var WIFISwitch = require('./models/wifiswitch');
-var application_root = __dirname,
-    path = require("path");
- 
+
+// Route del index
+var routes          = require('./routes/index');
+
+/****************************CONTROLLERS****************************/
+// Routes de la API
+var api             = require('./controllers/api');
+// Inicialización de la aplicación
+var Init            = require('./controllers/init');
+
+/****************************APLICACION****************************/
+ // Declaracion de la aplicacion
 var app = express();
- 
+app.disable('x-powered-by');
+ // Use the passport package in our application
+app.use(passport.initialize());
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.engine("html", require("ejs").renderFile);
-app.set('view engine', 'html');
+app.set     ('views', path.join(__dirname, 'views'));
+app.engine  ("html", require("ejs").renderFile);
+app.set     ('view engine', 'html');
  
 app.use(favicon('public/images/favicon.ico'));
 app.use(logger('dev'));
@@ -31,12 +49,21 @@ app.use(bodyParser.json());
 app.use(methodOverride());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+// Direccion de los paquetes de BOWER
 app.use('/bower_components',  express.static(__dirname + '/bower_components'));
 
+// Direccion de las Routes
 app.use('/', routes);
-app.use('/users', users);
+app.use('/api', api);
 
-app.use('/api/agenda', apiAgenda);
+// Use the passport package in our application
+app.use(passport.initialize());
+
+// Inicializamos la aplicación
+Init.initMongoDB();
+Init.initUsers  ();
+Init.initBuilding();
+
 
 var agenda = new Agenda({db: {address: 'localhost:27017/agenda-example'}});
 
@@ -64,10 +91,6 @@ agenda.on('ready', function() {
 	
 });
 
-
-
-// Connect to the beerlocker MongoDB
-// mongoose.connect('mongodb://localhost:27017/wihome');
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');

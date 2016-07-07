@@ -18,13 +18,14 @@
   <script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
   <script type="text/javascript" src="bower_components/angular-aria/angular-aria.js"></script>
   <script type="text/javascript" src="bower_components/angular-material/angular-material.min.js"></script>
-  
+  <script type="text/javascript" src="bower_components/angular-messages/angular-messages.min.js"></script>
   <!-- endbuild -->
   <!-- Custom Scripts -->
   <script type="text/javascript" src="javascripts/module.js"></script>
   <script type="text/javascript" src="javascripts/routes.js"></script>
   <script type="text/javascript" src="javascripts/controllers/alert-ctrl.js"></script>
   <script type="text/javascript" src="javascripts/controllers/master-ctrl.js"></script>
+  <script type="text/javascript" src="javascripts/controllers/settings-ctrl.js"></script>
   
 </head>
 <body ng-controller="MasterCtrl">
@@ -54,7 +55,7 @@
 			</md-list-item>
 
 			<md-divider></md-divider>
-			<md-list-item ng-click="null" g-click="go(settings.url)">
+			<md-list-item ng-click="go(settings.url)">
 				<p> {{ settings.name }} </p>
 				<md-icon md-svg-icon="{{settings.iconUrl}}" ></md-icon>
 			</md-list-item>
@@ -80,8 +81,8 @@
 				<md-icon md-svg-icon="images/avatar.svg" ></md-icon>
 			  </md-button>
 			  <md-menu-content width="2">
-				<md-menu-item ng-repeat="item in [1, 2, 3]">
-				  <md-button > <span md-menu-align-target>Option</span> {{item}} </md-button>
+				<md-menu-item ng-repeat="item in userMenu">
+				  <md-button ng-click="go(item.url)"> <span md-menu-align-target></span> {{item.name}} </md-button>
 				</md-menu-item>
 			  </md-menu-content>
 			</md-menu>        

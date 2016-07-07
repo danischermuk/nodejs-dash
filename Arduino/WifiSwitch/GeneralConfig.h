@@ -9,6 +9,10 @@
 
 #define   GENERALCONFIG_VERSION       1
 
+#define   BOARD_MODEL "ESP8266-01"
+
+#define   GPIO_QTY    2
+
 #define   GENERALCONFIG_EEPROM_ADDR   0
 
 #define   DEVICE_NAME_MAX_LENGTH  16
@@ -25,6 +29,12 @@
 const byte IP_DEFAULT[]           {10,  0,    0,    159};
 const byte GATEWAY_DEFAULT[]      {10,  0,    0,    2};
 const byte SUBNET_DEFAULT[]       {255, 255,  255,  0};
+
+typedef struct GpioState_t
+{
+    byte      pinNumber;
+    int      state;
+};
 
 typedef struct Wificonfig_t
 {
@@ -48,6 +58,25 @@ typedef struct GeneralConfig_t
 
 // DEFINO LA VARIABLE DE CONFIGURACION
 GeneralConfig_t GeneralConfig;
+// Defino la variable de estado de los pines
+GpioState_t gpioState[GPIO_QTY] = {{0,0},{2,0}};
+
+
+int gpioGetState (GpioState_t gpio)
+{
+  return gpio.state;
+}
+
+void gpioSetState (int gpio, bool state)
+{
+  gpioState[gpio].state = state;
+  digitalWrite (gpioState[gpio].pinNumber, gpioState[gpio].state);
+  Serial.println("gpioSetState()");
+  Serial.print("GPIO: ");
+  Serial.println(gpioState[gpio].pinNumber);
+  Serial.print("State: ");
+  Serial.println(gpioState[gpio].state);
+}
 
 void IPcpy (byte* dest, const byte* src)
 {

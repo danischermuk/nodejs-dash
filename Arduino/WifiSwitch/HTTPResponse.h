@@ -29,16 +29,21 @@ typedef enum HTTPResponseType_t {
   INTERNAL_SERVER_ERROR_500
 };
 
-void HTTPSendResponse (WiFiClient cli, HTTPResponseType_t responseType, String content)
+void HTTPSendResponse (WiFiClient* cli, HTTPResponseType_t responseType, String* content)
 {
   // Prepare the response
   String s = HTTP_REQUEST_LINE + HTTPRequestLineCode[responseType];
-  s += "\n" + HTTP_CONTENT_TYPE;
-  s += "\n" + HTTP_CONTENT_LENGTH + " " + (sizeof(content)+1);
-  s += "\r\n\r\n" + content;
-  
-  cli.print(s);
+  if (content != NULL)
+  {
+    s += "\n" + HTTP_CONTENT_TYPE;
+    s += "\n" + HTTP_CONTENT_LENGTH + " " + content->length();
+  }
+  s += "\r\n\r\n";
+  if (content != NULL)
+    s += *content;
+  cli->print(s);
   delay(1);
+  cli->flush();
 }
 
 #endif // HTTPRESPONSE_H_

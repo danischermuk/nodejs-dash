@@ -16,6 +16,7 @@ router.route('/user')
 	.get 	(authController.isAuthenticated, userController.getUsers)
 	.post 	(authController.isAuthenticated, userController.postUser);
 
+
 router.route('/user/:user_id')
 	.get 	(authController.isAuthenticated, userController.getUser)
 	.put 	(authController.isAuthenticated, userController.updateUser)

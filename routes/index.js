@@ -1,20 +1,18 @@
 var express = require('express');
 var router = express.Router();
 var WIFISwitch = require('../models/wifiswitch');
+var passport = require('passport')
+var authController = require('../controllers/auth.js');
 
 /* GET home page. */
-router.get('/', function(req, res) {
-  res.render('index', { title: 'Express', framework: 'AngularJS'});
-});
- 
-router.get('/login', function(req, res) {
-  res.redirect('/#/login');
-});
- 
-router.post('/login', function(req, res) 
-{
-	res.send(req.body);
-})
+// router.get('/', function(req, res) {
+//   res.render('index', { title: 'Express', framework: 'AngularJS'});
+// });
+
+router.route('/')
+  .get  (authController.isAuthenticated, function(req, res) { res.render('index', { title: 'Express', framework: 'AngularJS'})});
+
+
 
 // Create a new route with the prefix /wifiSwitch
 var wiRoute = router.route('/wi');

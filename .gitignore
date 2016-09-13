@@ -48,6 +48,9 @@ Icon
 # Bower components
 /bower_components
 
+# DB Data
+/data
+
 # JetBrains
 .idea
 =======

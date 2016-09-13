@@ -60,7 +60,7 @@ exports.updateUser = function(req, res) {
       if (err)
         res.send(err);
       else
-          res.json(user);
+        res.json(user);
     });
   });
 };
@@ -85,17 +85,17 @@ exports.getUserMenu = function(req, res) {
       if(user.admin === true)
       {
         res.send([{  "name": "View Profile",
-                      "url":  "/profile"}, 
-                      { 
-                      "name": "Advanced Settings",
-                      "url":  "/advsettings"
-                     }]);
+          "url":  "/profile"}, 
+          { 
+            "name": "Advanced Settings",
+            "url":  "/advsettings"
+          }]);
       }
       else
       {
         res.send( [{  "name": "View Profile", 
-                      "url":  "/profile"
-                     }]);
+          "url":  "/profile"
+        }]);
       }
-  });
+    });
 };

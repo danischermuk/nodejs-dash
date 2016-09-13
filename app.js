@@ -9,7 +9,6 @@ var methodOverride  = require("method-override");
 var mongoose        = require('mongoose');
 var Agenda          = require('agenda');
 var passport        = require('passport');
-
 // Definicion del path
 var application_root = __dirname;
 
@@ -55,9 +54,6 @@ app.use('/bower_components',  express.static(__dirname + '/bower_components'));
 // Direccion de las Routes
 app.use('/', routes);
 app.use('/api', api);
-
-// Use the passport package in our application
-app.use(passport.initialize());
 
 // Inicializamos la aplicación
 Init.initMongoDB();

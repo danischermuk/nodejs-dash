@@ -1,9 +1,15 @@
 // Load required packages
 var passport        = require('passport');
+var passportJWT     = require("passport-jwt");
 var BasicStrategy   = require('passport-http').BasicStrategy;
+var JwtStrategy     = require('passport-jwt').Strategy;
 var User            = require('../models/user');
+var ExtractJwt      = passportJWT.ExtractJwt;
+var Strategy        = passportJWT.Strategy;
 
-passport.use(new BasicStrategy(
+
+
+passport.use('basic', new BasicStrategy(
   function(username, password, callback) {
     User.findOne({ username: username }, function (err, user) {
       if (err) { console.log("1");return callback(err); }
@@ -19,6 +25,7 @@ passport.use(new BasicStrategy(
         if (!isMatch) { console.log("4");return callback(null, false); }
 
         // Success
+        console.log("5");
         return callback(null, user);
       });
     });

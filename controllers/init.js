@@ -1,6 +1,8 @@
 var mongoose        = require('mongoose');
 var User            = require('../models/user');
 var Building        = require('../models/building');
+var Room        	= require('../models/room');
+
 
 // Inicializamos la DB
 // Connect to the db MongoDB
@@ -57,12 +59,23 @@ exports.initBuilding = function () {
 						console.log("Couldn't find any users, cannot create Building", err);
 					else
 					{
+						var room1 = new Room({
+							name	: "Room1",
+						});
+						var room2 = new Room({
+							name	: "Room2",
+						});
+
+
 						var building = new Building({
 							name     : "Building",
 							address  : "Address",
 							telephone: "Telephone",
+							rooms 	 : [room1, room2], 
 							users    : users
 						});
+
+
 
 						// Save the building and check for errors
 						building.save(function(err) {

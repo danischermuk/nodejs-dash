@@ -5,7 +5,8 @@ var router    		= express.Router();
 var authController 		= require('./auth'); 
 var userController 		= require('./user');
 var buildingController 	= require('./building');
-var roomController 		= require('./room');
+
+
 // Define Routes
 
 /**********************************************************
@@ -15,6 +16,9 @@ var roomController 		= require('./room');
 router.route('/user')
 	.get 	(authController.isAuthenticated, userController.getUsers)
 	.post 	(authController.isAuthenticated, userController.postUser);
+
+router.route('/user/me')
+	.get 	(authController.isAuthenticated, userController.getReqUser);
 
 
 router.route('/user/:user_id')
@@ -41,18 +45,14 @@ router.route('/building/:building_id')
 router.route('/building/user/:user_id')
 	.get 	(authController.isAuthenticated, buildingController.getBuildingsByUser)
 
-/**********************************************************
-						ROOM API
-***********************************************************/
+router.route('/building/:building_id/room')
+	.get 	(authController.isAuthenticated, buildingController.getBuildingRooms)
+	.post 	(authController.isAuthenticated, buildingController.postBuildingRoom);
 
-router.route('/room')
-	.get 	(authController.isAuthenticated, roomController.getRooms)
-	.post 	(roomController.postRoom);
-
-router.route('/room/:room_id')
-	.get 	(authController.isAuthenticated, roomController.getRoom)
-	.put 	(authController.isAuthenticated, roomController.updateRoom)
-	.delete (authController.isAuthenticated, roomController.deleteRoom);
+ router.route('/building/:building_id/room/:room_id')
+ 	.get 	(authController.isAuthenticated, buildingController.getBuildingRoom)
+ 	.put 	(authController.isAuthenticated, buildingController.updateBuildingRoom)
+ 	.delete (authController.isAuthenticated, buildingController.deleteBuildingRoom);
 
 /**********************************************************
 						APPLIANCE API

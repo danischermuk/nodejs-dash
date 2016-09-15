@@ -30,22 +30,26 @@
  $scope.users       = {};
  $scope.currentUser = {};
  $scope.userMenu    = {};
- $scope.getUsers = function () {
-   userService.getUsers()
+ $scope.getUser = function () {
+   userService.getMe()
    .then(function (response) {
-    $scope.users = response.data;
-    $scope.currentUser = $scope.users[0];
-    console.log($scope.users);
+    $scope.currentUser = response.data;
     console.log($scope.currentUser);
-    userService.getUserMenu($scope.currentUser._id)
+    userService.getUserMenu($scope.currentUser.username)
     .then( function (response) {
       $scope.userMenu = response.data;
     })
+    buildingService.getBuildingsByUser($scope.currentUser.username)
+    .then( function (response) {
+      $scope.buildings = response.data;
+    }, function (error) {
+      $scope.status = 'Unable to find any buildings for this user' + error.message;
+    })
   }, function (error) {
-    $scope.status = 'Unable to load users: ' + error.message;
+    $scope.status = 'Unable to load user: ' + error.message;
   });
  };
- $scope.getUsers();
+ $scope.getUser();
 
 
  

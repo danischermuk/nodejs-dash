@@ -36,6 +36,7 @@ exports.postUser = function(req, res) {
 
 // Create endpoint /api/user/:user_id for GET
 exports.getUser = function(req, res) {
+  console.log(req.params);
   User.findById(req.params.user_id, function(err, user) {
     if (err)
       res.send(err);
@@ -62,13 +63,13 @@ exports.updateUser = function(req, res) {
       else
         res.json(user);
     });
-  });
+  }); 
 };
 
 // Create endpoint /api/user/:user_id for DELETE
 exports.deleteUser = function(req, res) {
   // Use the Beer model to find a specific beer and remove it
-  User.findByIdAndRemove(req.params.user_id, function(err) {
+  User.findByIdAndRemove(req.params.user_id , function(err) {
     if (err)
       res.send(err);
     else
@@ -99,3 +100,10 @@ exports.getUserMenu = function(req, res) {
       }
     });
 };
+
+exports.getReqUser = function(req, res) {
+  if(req.user)
+    res.send(req.user);
+  else
+    res.send();
+}

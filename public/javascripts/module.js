@@ -9,6 +9,11 @@ app.factory('userService', ['$http', function($http) {
         return $http.get(urlBase);
     };
 
+    userService.getMe = function () {
+        return $http.get(urlBase + '/me');
+    };
+
+
     userService.getUser = function (id) {
         return $http.get(urlBase + '/' + id);
     };
@@ -28,6 +33,8 @@ app.factory('userService', ['$http', function($http) {
     userService.getUserMenu = function (id) {
         return $http.get(urlBase + '/' + id + '/menu');
     };
+
+
     
     return userService;
 }]);

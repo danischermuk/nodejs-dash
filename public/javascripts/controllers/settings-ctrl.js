@@ -70,7 +70,7 @@ function SettingsCtrl($scope, $location, $mdSidenav, $timeout, userService, buil
 		});
 	};
 
-	buildingService.getBuildingsByUser($scope.currentUser._id)
+	buildingService.getBuildingsByUser($scope.currentUser.username)
 			.then(function (response) {
 				$scope.buildings = response.data;
 				console.log($scope.buildings);

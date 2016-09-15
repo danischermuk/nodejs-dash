@@ -10,7 +10,7 @@ var authController = require('../controllers/auth.js');
 // });
 
 router.route('/')
-  .get  (authController.isAuthenticated, function(req, res) { res.render('index', { title: 'Express', framework: 'AngularJS'})});
+  .get  (authController.isAuthenticated, function(req, res) { res.render('index', { user: req.user}); });
 
 
 

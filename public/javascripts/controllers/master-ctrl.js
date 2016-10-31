@@ -27,9 +27,12 @@
    $state.go( state );
  };
 
+
+
  $scope.users       = {};
  $scope.currentUser = {};
  $scope.userMenu    = {};
+ $scope.currentRoom = {};
  $scope.getUser = function () {
    userService.getMe()
    .then(function (response) {
@@ -52,7 +55,10 @@
  };
  $scope.getUser();
 
-
+ $scope.showRoom = function (room) {
+    $scope.currentRoom = room;
+    $state.go ('room');
+ };
  
 
 	 /**

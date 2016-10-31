@@ -50,7 +50,7 @@
 		<!-- BUILDINGS con sus ROOMS -->
 			<md-divider ng-repeat="building in buildings">
 			<md-subheader class="md-no-sticky" ng-click="go('tables')">{{building.name}}</md-subheader>
-			<md-list-item ng-repeat="room in building.rooms" ng-click="go('tables')" >
+			<md-list-item ng-repeat="room in building.rooms" ng-click="showRoom(room)" >
 				<p> {{ room.name }} </p>
 				<md-icon md-svg-icon="{{room.iconUrl}}" ></md-icon>
 			</md-list-item>

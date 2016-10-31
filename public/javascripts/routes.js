@@ -22,6 +22,10 @@ angular.module('RDash').config(['$stateProvider', '$urlRouterProvider',
             .state('settings', {
                 url: '/settings',
                 templateUrl: 'templates/settings.html'
+            })
+            .state('room', {
+                url: '/room',
+                templateUrl: 'templates/room.html'
             });
     }
 ]);

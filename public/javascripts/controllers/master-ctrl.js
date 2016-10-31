@@ -3,10 +3,10 @@
  */
 
  angular.module('RDash')
- .controller('MasterCtrl', ['$scope', '$location','$mdSidenav', '$timeout', 'userService', 'buildingService', 'roomService', '$mdDialog', MasterCtrl]);
+ .controller('MasterCtrl', ['$scope', '$location','$mdSidenav', '$timeout', 'userService', 'buildingService', '$mdDialog', '$state', MasterCtrl]);
 
 
- function MasterCtrl($scope, $location, $mdSidenav, $timeout, userService, buildingService, roomService, $mdDialog) {
+ function MasterCtrl($scope, $location, $mdSidenav, $timeout, userService, buildingService, $mdDialog, $state) {
 
   $scope.hide = function() {
     console.log("hidden master");
@@ -22,9 +22,9 @@
   };
 
 
-  $scope.go = function ( path ) {
-   console.log(path);
-   $location.path( path );
+  $scope.go = function ( state ) {
+   console.log(state);
+   $state.go( state );
  };
 
  $scope.users       = {};
@@ -39,9 +39,10 @@
     .then( function (response) {
       $scope.userMenu = response.data;
     })
-    buildingService.getBuildingsByUser($scope.currentUser.username)
+    buildingService.getBuildingsByUser($scope.currentUser._id)
     .then( function (response) {
       $scope.buildings = response.data;
+      console.log(response.data);
     }, function (error) {
       $scope.status = 'Unable to find any buildings for this user' + error.message;
     })
@@ -81,20 +82,12 @@
       }, 200);
     };
     
-    $scope.buildToggler = function (navID) {
-      return function() {
-        // Component lookup should always be available since we are not using `ng-if`
-        $mdSidenav(navID)
-        .toggle()
-        .then(function () {
-          $log.debug("toggle " + navID + " is done");
-        });
-      }
-    };
     
 
-
     $scope.toggleLeft = $scope.buildDelayedToggler('left');	
+    $scope.closeLeft = function () {
+      $mdSidenav('left').close();
+    };
 
     $scope.dashboard = {  "name":   "Dashboard",
     "url":    "/#",

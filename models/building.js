@@ -1,7 +1,10 @@
 var mongoose = require('mongoose'),  
     Schema   = mongoose.Schema;
 
-var roomSchema = require('mongoose').model('Room').schema
+var roomSchema = new Schema({  
+  name: 		{type: String, uniqe: true},
+  appliances: 	[{type : mongoose.Schema.ObjectId, ref : 'Appliance'}]
+});
 
 var buildingSchema = new Schema({  
   name: 		{type:String, unique:true, required:true},

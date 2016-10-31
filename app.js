@@ -15,7 +15,6 @@ var application_root = __dirname;
 /****************************MODELOS****************************/
 var WIFISwitch      = require('./models/wifiswitch');
 var User            = require('./models/user');
-var Room            = require('./models/room');
 var Building        = require('./models/building');
 var Appliance       = require('./models/appliance');
 var ApplianceGroup  = require('./models/ApplianceGroup');

@@ -5,6 +5,7 @@ var router    		= express.Router();
 var authController 		= require('./auth'); 
 var userController 		= require('./user');
 var buildingController 	= require('./building');
+var applianceController = require('./appliance');
 
 
 // Define Routes
@@ -33,30 +34,42 @@ router.route('/user/:user_id/menu')
 						BUILDING API
 ***********************************************************/
 
-router.route('/building')
+router.route('/b')
 	.get 	(authController.isAuthenticated, buildingController.getBuildings)
 	.post 	(authController.isAuthenticated, buildingController.postBuilding);
 
-router.route('/building/:building_id')
+router.route('/b/:building_id')
 	.get 	(authController.isAuthenticated, buildingController.getBuilding)
 	.put 	(authController.isAuthenticated, buildingController.updateBuilding)
 	.delete (authController.isAuthenticated, buildingController.deleteBuilding);
 
-router.route('/building/user/:user_id')
+router.route('/b/user/:user_id')
 	.get 	(authController.isAuthenticated, buildingController.getBuildingsByUser)
 
-router.route('/building/:building_id/room')
+router.route('/b/:building_id/r')
 	.get 	(authController.isAuthenticated, buildingController.getBuildingRooms)
 	.post 	(authController.isAuthenticated, buildingController.postBuildingRoom);
 
- router.route('/building/:building_id/room/:room_id')
+ router.route('/b/:building_id/r/:room_id')
  	.get 	(authController.isAuthenticated, buildingController.getBuildingRoom)
  	.put 	(authController.isAuthenticated, buildingController.updateBuildingRoom)
  	.delete (authController.isAuthenticated, buildingController.deleteBuildingRoom);
 
+ router.route('/b/:building_id/r/:room_id/a')
+ 	.get 	(authController.isAuthenticated, buildingController.getBuildingRoomAppliance)
+ 	.post 	(authController.isAuthenticated, buildingController.postBuildingRoomAppliance);
+
+ router.route('/b/:building_id/r/:room_id/a/:appliance_id')
+	.delete 	(authController.isAuthenticated, buildingController.deleteBuildingRoomAppliance); 	
+
+
 /**********************************************************
 						APPLIANCE API
 ***********************************************************/
+
+router.route('/appliance')
+	.get 	(authController.isAuthenticated, applianceController.getAppliances)
+	.post 	(authController.isAuthenticated, applianceController.postAppliance);
 
 
 

@@ -1,8 +1,8 @@
 angular.module('RDash')
-.controller('SettingsCtrl', ['$scope', '$location','$mdSidenav', '$timeout', 'userService', 'buildingService', 'roomService', '$mdDialog', SettingsCtrl]);
+.controller('SettingsCtrl', ['$scope', '$location','$mdSidenav', '$timeout', 'userService', 'buildingService', '$mdDialog', SettingsCtrl]);
 
 
-function SettingsCtrl($scope, $location, $mdSidenav, $timeout, userService, buildingService, roomService, $mdDialog) {
+function SettingsCtrl($scope, $location, $mdSidenav, $timeout, userService, buildingService,  $mdDialog) {
 	console.log("settings ctrl open");
 	$scope.building = {};
 	$scope.buildings = {};

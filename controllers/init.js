@@ -1,13 +1,14 @@
 var mongoose        = require('mongoose');
 var User            = require('../models/user');
 var Building        = require('../models/building');
-var Room        	= require('../models/room');
+var Appliance       = require('../models/appliance');
+
 
 
 // Inicializamos la DB
 // Connect to the db MongoDB
 exports.initMongoDB = function () {
-	mongoose.connect('mongodb://localhost:27017/wihome');
+	mongoose.connect('mongodb://localhost:27017/base');
 };
 
 
@@ -59,12 +60,70 @@ exports.initBuilding = function () {
 						console.log("Couldn't find any users, cannot create Building", err);
 					else
 					{
-						var room1 = new Room({
+						var appliance1 = new Appliance ({
+							name		: "Appliance 1",
+							ip			: "192.168.1.123",
+							type		: "type",
+							online 		: true,
+							chipIdkey	: 1234567891
+						});
+
+						var appliance2 = new Appliance ({
+							name		: "Appliance 2",
+							ip			: "192.168.1.124",
+							type		: "type",
+							online 		: true,
+							chipIdkey	: 1234567892
+						});
+
+						var appliance3 = new Appliance ({
+							name		: "Appliance 3",
+							ip			: "192.168.1.125",
+							type		: "type",
+							online 		: true,
+							chipIdkey	: 1234567893
+						});
+
+						var appliance4 = new Appliance ({
+							name		: "Appliance 4",
+							ip			: "192.168.1.126",
+							type		: "type",
+							online 		: true,
+							chipIdkey	: 1234567894
+						});
+
+						// Save the appliances and check for errors
+						appliance1.save(function(err) {
+							if (err)
+								console.log(err);
+							else
+								console.log({ message: 'appliance1 added to the db!', data: appliance1 });
+						});
+						appliance2.save(function(err) {
+							if (err)
+								console.log(err);
+							else
+								console.log({ message: 'appliance2 added to the db!', data: appliance2 });
+						});
+						appliance3.save(function(err) {
+							if (err)
+								console.log(err);
+							else
+								console.log({ message: 'appliance3 added to the db!', data: appliance3 });
+						});
+						appliance4.save(function(err) {
+							if (err)
+								console.log(err);
+							else
+								console.log({ message: 'appliance4 added to the db!', data: appliance4 });
+						});
+
+						var room1 ={
 							name	: "Room1",
-						});
-						var room2 = new Room({
+						};
+						var room2 = {
 							name	: "Room2",
-						});
+						};
 
 
 						var building = new Building({

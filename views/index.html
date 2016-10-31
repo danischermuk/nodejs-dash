@@ -41,21 +41,23 @@
 	  <md-content>
 		<!-- CONTENIDO DEL SIDENAV -->
 		
-		<md-list flex>
-			<md-list-item ng-click="null" g-click="go(dashboard.url)">
+		<md-list flex ng-click="closeLeft()">
+		<!-- Boton del DASHBOARD -->
+			<md-list-item  ng-click="go('index')">
 				<p> {{ dashboard.name }} </p>
 				<md-icon md-svg-icon="{{dashboard.iconUrl}}" ></md-icon>
 			</md-list-item>
-			
-			<md-divider></md-divider>
-			<md-subheader class="md-no-sticky">{{rooms.name}}</md-subheader>
-			<md-list-item ng-repeat="room in rooms.items" ng-click="go(room.url)" >
+		<!-- BUILDINGS con sus ROOMS -->
+			<md-divider ng-repeat="building in buildings">
+			<md-subheader class="md-no-sticky" ng-click="go('tables')">{{building.name}}</md-subheader>
+			<md-list-item ng-repeat="room in building.rooms" ng-click="go('tables')" >
 				<p> {{ room.name }} </p>
 				<md-icon md-svg-icon="{{room.iconUrl}}" ></md-icon>
 			</md-list-item>
-
+			</md-divider>
+		<!-- Boton de SETTINGS -->
 			<md-divider></md-divider>
-			<md-list-item ng-click="go(settings.url)">
+			<md-list-item ng-click="go('settings')">
 				<p> {{ settings.name }} </p>
 				<md-icon md-svg-icon="{{settings.iconUrl}}" ></md-icon>
 			</md-list-item>

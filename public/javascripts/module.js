@@ -41,7 +41,7 @@ app.factory('userService', ['$http', function($http) {
 
 app.factory('buildingService', ['$http', function($http) {
 
-    var urlBase = '/api/building';
+    var urlBase = '/api/b';
     var buildingService = {};
 
     buildingService.getBuildings = function () {
@@ -71,30 +71,3 @@ app.factory('buildingService', ['$http', function($http) {
     return buildingService;
 }]);
 
-app.factory('roomService', ['$http', function($http) {
-
-    var urlBase = '/api/room/';
-    var roomService = {};
-
-    roomService.getRooms = function () {
-        return $http.get(urlBase);
-    };
-
-    roomService.getRoom = function (id) {
-        return $http.get(urlBase + '/' + id);
-    };
-
-    roomService.insertRoom = function (cust) {
-        return $http.post(urlBase, cust);
-    };
-
-    roomService.updateRoom = function (cust) {
-        return $http.put(urlBase + '/' + cust.ID, cust)
-    };
-
-    roomService.deleteRoom = function (id) {
-        return $http.delete(urlBase + '/' + id);
-    };
-    
-    return roomService;
-}]);

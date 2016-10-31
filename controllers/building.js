@@ -2,8 +2,8 @@
 var mongoose  = require('mongoose');
 // MongoDB models
 var Building  = mongoose.model('Building');
-var Room      = mongoose.model('Room');
 var User      = mongoose.model('User');
+var Appliance = mongoose.model('Appliance');
 
 // Create endpoint /api/building/ for GET
 exports.getBuildings = function(req, res) {
@@ -11,6 +11,10 @@ exports.getBuildings = function(req, res) {
   console.log("GET /api/building/");
   Building.find()
   .populate('users')
+  .populate({
+    path: 'rooms.appliances',
+    model: 'Appliance'
+  })
   .exec(function(err, building) {
     if (err)
       res.send(err);
@@ -46,6 +50,10 @@ exports.getBuilding = function(req, res) {
   Building
   .findById(req.params.building_id)
   .populate('users')
+  .populate({
+    path: 'rooms.appliances',
+    model: 'Appliance'
+  })
   .exec(function(err, building) {
     if (err)
       res.send(err);
@@ -59,6 +67,11 @@ exports.getBuildingsByUser = function(req, res) {
   Building
   .find({users : req.params.user_id})
   .populate('users')
+  .populate({
+    path: 'rooms',
+    populate: {path: 'appliances',
+    model: 'Appliance'}
+  })
   .exec(function(err, buildings) {
     if (err)
       res.send(err);
@@ -114,9 +127,10 @@ exports.getBuildingRooms = function (req, res) {
 // Create endpoint /api/building/:building_id/room for POSTS
 exports.postBuildingRoom = function(req, res) {
 
-  var room = new Room({
-    name: req.body.name
-  });
+  var room = {
+    name: req.body.name,
+    appliances: body.req.appliances
+  };
   
   Building.findByIdAndUpdate ( req.params.building_id ,
     {$push: {"rooms": room}},
@@ -137,12 +151,13 @@ exports.getBuildingRoom = function (req, res) {
   })
 };
 
-// Create endpoint /api/building/:name/room/:roomname for PUT
+// Create endpoint /api/building/:building_id/room/:room_id for PUT
 exports.updateBuildingRoom = function (req, res) {
   Building.update (
     {_id : req.params.building_id, 'rooms._id' : req.params.room_id},
     {'$set': {
-      'rooms.$.name': req.body.name
+      'rooms.$.name': req.body.name,
+      'rooms.$.appliances': req.body.appliances
     }},
     function (err) {
       if (err)
@@ -153,7 +168,7 @@ exports.updateBuildingRoom = function (req, res) {
     );
 };
 
-// Create endpoint /api/building/:name/room/:roomname for DELETE
+// Create endpoint /api/building/:building_id/room/:room_id for DELETE
 exports.deleteBuildingRoom = function (req, res) {
   Building.update (
     {},
@@ -161,6 +176,50 @@ exports.deleteBuildingRoom = function (req, res) {
     function (err) {
       if (err)
         res.send(err);
+      else
+        res.json("exito!");
+    }
+    );
+};
+
+
+// Create endpoint /api/building/:building_id/room/:room_id/appliance for GET
+exports.getBuildingRoomAppliance = function (req, res) {
+  Building.findById(req.params.building_id , function (err, building) {
+    if (err)
+      res.send(err);
+    else {
+      var room = building.rooms.id(req.params.room_id);
+      res.json(room.appliances);
+    }
+  })
+};
+
+
+// Create endpoint /api/building/:building_id/room/:room_id/appliance for POST
+exports.postBuildingRoomAppliance = function(req, res) {
+  Building.update (
+    {_id : req.params.building_id, 'rooms._id' : req.params.room_id},
+    {'$push': {
+      'rooms.$.appliances':req.body.appliance_id
+    }},
+    function (err) {
+      if (err)
+        console.log(err);
+      else
+        res.json("exito!");
+    }
+    );
+};
+
+// Create endpoint /api/building/:building_id/room/:room_id/appliance for DELETE
+exports.deleteBuildingRoomAppliance = function(req, res) {
+  Building.update (
+    {_id : req.params.building_id, 'rooms._id' : req.params.room_id},
+    {'$pull': {'rooms.$.appliances': req.params.appliance_id} },
+    function (err) {
+      if (err)
+        console.log(err);
       else
         res.json("exito!");
     }

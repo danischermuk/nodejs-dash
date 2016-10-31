@@ -2,12 +2,11 @@ var mongoose = require('mongoose'),
     Schema   = mongoose.Schema;
 
 var applianceSchema = new Schema({  
-  name: 		String,
-  ip: 			String,
+  name: 		{type:String, unique:true, required:true},
+  ip: 			String, 
   type:  		String,
   online:  		Boolean,
-  chipIdkey:    Number,
-  room:   {type : mongoose.Schema.ObjectId, ref : 'Room', required: true}
+  chipIdkey:    {type:String, unique:true, required:true}
   //TODO: incluir la configuracion de alguna forma
 });
 

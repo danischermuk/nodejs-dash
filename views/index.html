@@ -26,6 +26,9 @@
   <script type="text/javascript" src="javascripts/controllers/alert-ctrl.js"></script>
   <script type="text/javascript" src="javascripts/controllers/master-ctrl.js"></script>
   <script type="text/javascript" src="javascripts/controllers/settings-ctrl.js"></script>
+  <script type="text/javascript" src="javascripts/controllers/room-ctrl.js"></script>
+  <script type="text/javascript" src="javascripts/controllers/building-ctrl.js"></script>
+  <script type="text/javascript" src="javascripts/controllers/dash-ctrl.js"></script>
 
 </head>
 <body ng-controller="MasterCtrl">
@@ -48,9 +51,9 @@
 				<md-icon md-svg-icon="{{dashboard.iconUrl}}" ></md-icon>
 			</md-list-item>
 		<!-- BUILDINGS con sus ROOMS -->
-			<md-divider ng-repeat="building in buildings">
-			<md-subheader class="md-no-sticky" ng-click="go('tables')">{{building.name}}</md-subheader>
-			<md-list-item ng-repeat="room in building.rooms" ng-click="showRoom(room)" >
+			<md-divider ng-repeat="building in current.buildings">
+			<md-subheader class="md-no-sticky" ng-click="showBuilding(building)">{{building.name}}</md-subheader>
+			<md-list-item ng-repeat="room in building.rooms" ng-click="showRoom(building, room)" >
 				<p> {{ room.name }} </p>
 				<md-icon md-svg-icon="{{room.iconUrl}}" ></md-icon>
 			</md-list-item>
@@ -66,16 +69,15 @@
 		
 	  </md-content>
     </md-sidenav>
-
-	<md-content flex>      
-		<!-- TOOLBAR -->
+    <div layout="column" flex>
+    <!-- TOOLBAR -->
 		<md-toolbar class="material-theme-light material-medium-tall">
 			<div class="md-toolbar-tools">
 				<md-button class="md-icon-button" ng-click="toggleLeft()" aria-label="Menu" hide-gt-md>
 				  <md-icon md-svg-icon="images/menu.svg" ></md-icon>
 				</md-button>
 			<h2>
-			<span>Toolbar</span>
+			<span>{{toolbar.title}}</span>
 			</h2>
 			<span flex></span>
 			<md-menu  md-position-mode="target-right target">
@@ -90,9 +92,12 @@
 			</md-menu>        
 			</div>
 		</md-toolbar>	
+
+	<md-content flex>      
 			<!-- CONTENIDO -->
-		<div layout-padding ui-view></div>     
+		<div ui-view></div>     
     </md-content>
+    </div>
 	</section>
 </body>
 </html>

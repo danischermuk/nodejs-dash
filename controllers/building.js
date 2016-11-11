@@ -68,9 +68,8 @@ exports.getBuildingsByUser = function(req, res) {
   .find({users : req.params.user_id})
   .populate('users')
   .populate({
-    path: 'rooms',
-    populate: {path: 'appliances',
-    model: 'Appliance'}
+    path: 'rooms.appliances',
+    model: 'Appliance'
   })
   .exec(function(err, buildings) {
     if (err)
@@ -82,7 +81,7 @@ exports.getBuildingsByUser = function(req, res) {
 
 // Create endpoint /api/building/:building_id for PUT
 exports.updateBuilding = function(req, res) {
-  // Use the Beer model to find a specific beer
+  // Use the Building model to find a specific beer
   Building.findById(req.params.building_id, function(err, building) {
     if (err)
       res.send(err);
@@ -126,10 +125,10 @@ exports.getBuildingRooms = function (req, res) {
 
 // Create endpoint /api/building/:building_id/room for POSTS
 exports.postBuildingRoom = function(req, res) {
-
+  console.log(req);
   var room = {
     name: req.body.name,
-    appliances: body.req.appliances
+    appliances: req.body.appliances
   };
   
   Building.findByIdAndUpdate ( req.params.building_id ,

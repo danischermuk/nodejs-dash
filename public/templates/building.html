@@ -1,0 +1,72 @@
+<!-- <div class=" alerts-container" data-ng-controller="AlertsCtrl" data-ng-show="alerts.length">
+  <div>
+    <uib-alert data-ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+  </div>
+</div> -->
+<div >
+	<md-content flex layout-padding>
+		<div layout-gt-sm="row">
+			<md-input-container class="md-block" flex-gt-sm>
+				<label>Name</label>
+				<input ng-model="current.building.name">
+			</md-input-container>
+
+			<md-input-container class="md-block" flex-gt-sm>
+				<label>Telephone</label>
+				<input ng-model="current.building.telephone">
+			</md-input-container>
+		</div>
+		<div layout-gt-sm="row">
+			<md-input-container class="md-block" flex-gt-sm>
+				<label>Address</label>
+				<input ng-model="current.building.address">
+			</md-input-container>
+		</div>
+	</md-content>
+
+	<md-content layout-gt-xs="row" layout-wrap class="md-padding">
+			<md-card ng-repeat="room in current.building.rooms" ng-click="showRoom(current.building, room)">
+				<md-card-title>
+					<md-card-title-text>
+						<span class="md-headline">{{room.name}}</span>
+					</md-card-title-text>
+				</md-card-title>
+				<md-card-content>
+					<p ng-repeat="appliance in room.appliances">{{appliance.name}}</p>
+				</md-card-content>
+			</md-card>
+
+	</md-content>
+				<!-- BOTON DE "NEW ROOM" -->
+	<md-button class="md-fab md-fab-bottom-right" style="position:fixed;" aria-label="New Room" ng-click="openRoomDialog($event)">
+		<md-icon md-svg-src="images/add.svg"></md-icon>
+		<md-tooltip md-direction="top">New Room</md-tooltip>
+	</md-button>
+
+
+</div>
+
+<!-- Dialog de creación de Building -->
+<div style="visibility: hidden" >
+	<div class="md-dialog-container" id="roomDialog">
+		<md-dialog layout-padding >
+		<h2>New Room</h2>
+		<form name="roomForm">
+			<md-input-container class="md-block" >
+			<label>Name</label>
+			<input maxlength="30" required md-no-asterisk name="name" ng-model="newRoom.name" md-autofocus>
+			<div ng-messages="roomForm.name.$error">
+				<div ng-message="required">This is required.</div>
+				<div ng-message="maxlength">The name has to be less than 30 characters long.</div>
+			</div>
+		</md-input-container>
+	</form>
+
+	<section layout="row" layout-sm="column" layout-align="space-between center" layout-wrap>
+		<md-button class="md-raised md-warn" ng-click="cancelDialog()">Cancel</md-button>
+		<md-button class="md-raised md-primary" ng-click="createRoom()" ng-disabled="roomForm.$invalid">OK</md-button>
+	</section>
+
+</md-dialog>
+</div>
+</div>

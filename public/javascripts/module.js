@@ -67,7 +67,14 @@ app.factory('buildingService', ['$http', function($http) {
     buildingService.deleteBuilding = function (id) {
         return $http.delete(urlBase + '/' + id);
     };
-    
+
+    buildingService.getBuildingRoom = function (buildingId, roomId) {
+        return $http.get(urlBase + '/' + buildingId + '/r/' + roomId);
+    };
+
+    buildingService.insertBuildingRoom = function (id, room) {
+        return $http.post(urlBase + '/' + id + '/r', room);
+    };
     return buildingService;
 }]);
 

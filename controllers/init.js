@@ -119,10 +119,10 @@ exports.initBuilding = function () {
 						});
 
 						var room1 ={
-							name	: "Room1",
+							name	: "Room1"
 						};
 						var room2 = {
-							name	: "Room2",
+							name	: "Room2"
 						};
 
 

@@ -42,7 +42,7 @@ app.set     ('view engine', 'html');
  
 app.use(favicon('public/images/favicon.ico'));
 app.use(logger('dev'));
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(methodOverride());
 app.use(cookieParser());

@@ -6,7 +6,7 @@ function SettingsCtrl($scope, $location, $mdSidenav, $timeout, userService, buil
 	console.log("settings ctrl open");
 	$scope.building = {};
 	$scope.buildings = {};
-
+	$scope.toolbar.title = "Settings";
 
 
 	$scope.cancel = function() {
@@ -70,7 +70,7 @@ function SettingsCtrl($scope, $location, $mdSidenav, $timeout, userService, buil
 		});
 	};
 
-	buildingService.getBuildingsByUser($scope.currentUser.username)
+	buildingService.getBuildingsByUser($scope.currentUser._id)
 			.then(function (response) {
 				$scope.buildings = response.data;
 				console.log($scope.buildings);

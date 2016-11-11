@@ -7,15 +7,14 @@
 
 
  function MasterCtrl($scope, $location, $mdSidenav, $timeout, userService, buildingService, $mdDialog, $state) {
+  console.log("master ctrl open");
+  $scope.current       = {};
 
   $scope.hide = function() {
     console.log("hidden master");
     $mdDialog.hide();
   };
-  $scope.cancel = function() {
-    console.log("calcelled master");
-    $mdDialog.cancel();
-  };
+  
   $scope.answer = function(answer) {
     console.log(answer);
     $mdDialog.hide(answer);
@@ -28,11 +27,17 @@
  };
 
 
+ 
 
- $scope.users       = {};
- $scope.currentUser = {};
- $scope.userMenu    = {};
- $scope.currentRoom = {};
+ $scope.users         = {};
+ $scope.currentUser   = {};
+ $scope.userMenu      = {};
+ $scope.currentRoom   = {};
+ $scope.buildings = {};
+ $scope.currentBuilding   = {};
+ $scope.toolbar       = {};
+
+ $scope.toolbar.title = "Toolbar";
  $scope.getUser = function () {
    userService.getMe()
    .then(function (response) {
@@ -55,11 +60,19 @@
  };
  $scope.getUser();
 
- $scope.showRoom = function (room) {
-    $scope.currentRoom = room;
-    $state.go ('room');
- };
- 
+ $scope.showRoom = function (building, room) {
+  $scope.currentRoom = room;
+  $scope.toolbar.title = room.name;
+  $state.go ('room', {buildingId: building._id, roomId: room._id});
+};
+
+$scope.showBuilding = function (building) {
+  $scope.currentBuilding = building;
+  $scope.current.building = building;
+  $scope.toolbar.title = building.name;
+  $state.go ('building', {buildingId: building._id});
+};
+
 
 	 /**
      * Supplies a function that will continue to operate until the

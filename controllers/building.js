@@ -113,7 +113,13 @@ exports.deleteBuilding = function(req, res) {
 
 // Create endpoint /api/building/:building_id/room for get
 exports.getBuildingRooms = function (req, res) {
-  Building.findById(req.params.building_id, function (err, building) {
+  Building
+  .findById(req.params.building_id)
+  .populate({
+    path: 'rooms.appliances',
+    model: 'Appliance'
+  })
+  .exec(function (err, building) {
     if (err)
       res.send(err);
     else {
@@ -125,7 +131,6 @@ exports.getBuildingRooms = function (req, res) {
 
 // Create endpoint /api/building/:building_id/room for POSTS
 exports.postBuildingRoom = function(req, res) {
-  console.log(req);
   var room = {
     name: req.body.name,
     appliances: req.body.appliances
@@ -140,7 +145,13 @@ exports.postBuildingRoom = function(req, res) {
 
 // Create endpoint /api/building/:building_id/room/:room_id for get
 exports.getBuildingRoom = function (req, res) {
-  Building.findById(req.params.building_id , function (err, building) {
+  Building
+  .findById(req.params.building_id)
+  .populate({
+    path: 'rooms.appliances',
+    model: 'Appliance'
+  })
+  .exec(function (err, building) {
     if (err)
       res.send(err);
     else {

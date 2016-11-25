@@ -12,7 +12,6 @@
 #include <EEPROM.h>
 #include <string.h>
 #include <WiFiUdp.h>
-
 #include "EEPROMAnything.h"
 #include "CRC.h"
 #include "GeneralConfig.h"
@@ -22,7 +21,7 @@
 
 // #define DEBUG 1
 #define MEDIR_TIEMPOS 1
-#define HB_PERIOD 10000
+#define HB_PERIOD 5000
 // Create an instance of the server
 // specify the port to listen on as an argument
 WiFiServer server(80);
@@ -31,22 +30,11 @@ WiFiUDP Udp;
 unsigned int localUdpPort = 6789;
 long lastHB = 0;
 IPAddress ip;
-char packetBuffer[255];
-char  ReplyBuffer[] = "acknowledged";       // a string to send back
+char udpBuffer[255];
 
 #ifdef MEDIR_TIEMPOS
 long tiempo=0;
 #endif
-
-
-int charArrayLength( char* array, int max) {
-  int i=0;
-  for (i=0 ; i<max ; i++)
-    if (array[i] == '\0') return i;
-
-  return i;
-}
-
 
 void setup() {
 #ifdef MEDIR_TIEMPOS
@@ -153,25 +141,22 @@ void setup() {
 
   
   Udp.begin(localUdpPort);
+  ip = WiFi.localIP();
+  ip[3] = 255;
+
+  Udp.beginPacket(ip, localUdpPort);
+  Udp.write("Hello\n");
+  Udp.endPacket();
   lastHB = millis();
 }
 
 void loop() {
-  IPAddress ip = WiFi.localIP();
-  ip[3] = 255;
-
-  // transmit broadcast package
-  Udp.beginPacket(ip, localUdpPort);
-  Udp.write("Hello 10.0.0.255\n");
-  Udp.endPacket();
-  ip = WiFi.localIP();
-  ip[3] = 55;
-
-  // transmit broadcast package
-  Udp.beginPacket(ip, localUdpPort);
-  Udp.write("Hello 10.0.0.55\n");
-  Udp.endPacket();
-  Serial.println("Enviados");
-  delay(5000);
+  if((millis()-lastHB)>HB_PERIOD)
+  {
+    lastHB = millis();
+    Udp.beginPacket(ip, localUdpPort);
+    Udp.write(ESP.getChipId());
+    Udp.endPacket();
+  }
 }
 

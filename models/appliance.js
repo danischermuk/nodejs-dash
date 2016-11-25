@@ -2,7 +2,7 @@ var mongoose = require('mongoose'),
     Schema   = mongoose.Schema;
 
 var applianceSchema = new Schema({  
-  name: 		{type:String, unique:true, required:true},
+  name: 		{type:String, unique:true},
   ip: 			String, 
   type:  		String,
   online:  		Boolean,

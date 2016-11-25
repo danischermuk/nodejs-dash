@@ -9,6 +9,7 @@ var methodOverride  = require("method-override");
 var mongoose        = require('mongoose');
 var Agenda          = require('agenda');
 var passport        = require('passport');
+var dgram           = require('dgram');
 // Definicion del path
 var application_root = __dirname;
 
@@ -117,4 +118,25 @@ app.use(function(err, req, res, next) {
     });
 });
  
+
+
+var PORT = 6789;
+var broadcast_ip = '10.255.255.255';
+
+
+var server = dgram.createSocket('udp4');
+
+// server.bind(PORT, function() {
+//     server.setBroadcast(true);
+//     setInterval(broadcastNew, 3000);
+// });
+
+// function broadcastNew() {
+//     var brmessage = new Buffer("abc1234567890");
+//     server.send(brmessage, 0, brmessage.length, PORT, broadcast_ip, function() {
+//         console.log("Sent '" + brmessage + "'");
+//     });
+// }
+
+
 module.exports = app;

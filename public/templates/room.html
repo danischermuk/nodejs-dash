@@ -4,8 +4,74 @@
   </div>
 </div> -->
 <div>
-	<md-content flex layout-padding>
-	hola
+	<md-content layout-gt-xs="row" layout-wrap class="md-padding">
+			<md-card ng-repeat="appliance in current.room.appliances" ng-click="openApplianceDialog($event, appliance)">
+				<md-card-title>
+					<md-card-title-text>
+						<span class="md-headline">{{appliance.name}}</span>
+					</md-card-title-text>
+				</md-card-title>
+				<md-card-content>
+					<p> holaaaaa</p>
+				</md-card-content>
+			</md-card>
+			{{edit}}
+			{{delete}}
 	</md-content>
-	
+</div>
+
+
+
+
+
+
+
+<!-- ---------------------------------------------------------------------------------------- -->
+<!-- Dialog de Appliance -->
+<div style="visibility: hidden" >
+	<div class="md-dialog-container" id="applianceDialog">
+			<md-dialog layout-padding>
+			<h2>{{currentAppliance.name}}</h2>
+			<h3 ng-hide="delete===false">Are you sure you want to delete this Appliance?</h3>
+			<h4 ng-hide="delete===false">This cannot be undone!!</h4>
+			<form name="roomForm" ng-hide="delete===true">
+				<md-input-container class="md-block" >
+					<label>IP</label>
+					<input required md-no-asterisk name="ip" ng-model="currentAppliance.ip" disabled>
+				</md-input-container>
+
+				<md-input-container class="md-block" >
+					<label>Chip ID</label>
+					<input required md-no-asterisk name="chipId" ng-model="currentAppliance.chipIdkey" disabled>
+				</md-input-container>
+
+				<md-input-container class="md-block" >
+					<label>Type</label>
+					<input required md-no-asterisk name="type" ng-model="currentAppliance.type" disabled>
+				</md-input-container>
+
+				<md-input-container class="md-block" >
+					<label>ONLINE</label>
+					<input required md-no-asterisk name="type" ng-model="currentAppliance.online" disabled>
+				</md-input-container>
+			</form>
+
+		<section layout="column" ng-hide="delete===true">
+			<md-button class="md-raised md-accent" ng-click="showConfirmDelete($event)" ng-hide="edit===false">DELETE</md-button>
+		</section>
+
+		<section layout="row" layout-sm="column" layout-align="space-between center" layout-wrap ng-hide="delete===true">
+			<md-button class="md-raised md-warn" ng-click="editDialog()" ng-hide="edit===true">Edit</md-button>
+			<md-button class="md-raised md-warn" ng-click="cancelDialog()" ng-hide="edit===false">Cancel</md-button>
+			<md-button class="md-raised md-primary" ng-click="createRoom()" ng-disabled="roomForm.$invalid">OK</md-button>		
+		</section>
+
+		<section layout="row" layout-sm="column" layout-align="space-between center" layout-wrap ng-hide="delete===false">
+			<md-button class="md-raised md-warn" ng-click="cancelDelete()" >CANCEL</md-button>
+			<md-button class="md-raised md-primary" ng-click="deleteAppliance()">DELETE</md-button>			
+		</section>
+				
+
+	</md-dialog>
+	</div>
 </div>

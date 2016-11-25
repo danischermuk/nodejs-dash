@@ -71,6 +71,4 @@ router.route('/appliance')
 	.get 	(authController.isAuthenticated, applianceController.getAppliances)
 	.post 	(authController.isAuthenticated, applianceController.postAppliance);
 
-
-
 module.exports = router;

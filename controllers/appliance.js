@@ -76,86 +76,18 @@ exports.updateAppliance = function(req, res) {
   });
 };
 
-// // Create endpoint /api/building/:building_id for DELETE
-// exports.deleteBuilding = function(req, res) {
-//   // Use the Beer model to find a specific beer and remove it
-//   Building.findByIdAndRemove(req.params.building_id, function(err) {
-//     if (err)
-//       res.send(err);
-//     else
-//       res.json({ message: 'Building removed from the db!' });
-//   });
-// };
+// Create endpoint /api/appliance/:appliance_id for DELETE
+exports.deleteAppliance = function(req, res) {
+  // Use the Beer model to find a specific beer and remove it
+  Appliance.findByIdAndRemove(req.params.appliance_id, function(err) {
+    if (err)
+      res.send(err);
+    else
+      res.json({ message: 'Appliance removed from the db!' });
+  });
+};
 
-// // Create endpoint /api/building/:building_id/room for get
-// exports.getBuildingRooms = function (req, res) {
-//   Building.findById(req.params.building_id, function (err, building) {
-//     if (err)
-//       res.send(err);
-//     else {
-//       res.json(building.rooms);
-//     }
 
-//   })
-// };
-
-// // Create endpoint /api/building/:building_id/room for POSTS
-// exports.postBuildingRoom = function(req, res) {
-
-//   var room = {
-//     name: req.body.name,
-//     appliances: body.req.appliances
-//   };
-  
-//   Building.findByIdAndUpdate ( req.params.building_id ,
-//     {$push: {"rooms": room}},
-//     function (err) {
-//       res.send (err);
-//     });
-// };
-
-// // Create endpoint /api/building/:building_id/room/:room_id for get
-// exports.getBuildingRoom = function (req, res) {
-//   Building.findById(req.params.building_id , function (err, building) {
-//     if (err)
-//       res.send(err);
-//     else {
-//       var room = building.rooms.id(req.params.room_id);
-//       res.json(room);
-//     }
-//   })
-// };
-
-// // Create endpoint /api/building/:name/room/:roomname for PUT
-// exports.updateBuildingRoom = function (req, res) {
-//   Building.update (
-//     {_id : req.params.building_id, 'rooms._id' : req.params.room_id},
-//     {'$set': {
-//       'rooms.$.name': req.body.name,
-//       'rooms.$.name': req.body.appliances
-//     }},
-//     function (err) {
-//       if (err)
-//         console.log(err);
-//       else
-//         res.json("exito!");
-//     }
-//     );
-// };
-
-// // Create endpoint /api/building/:name/room/:roomname for DELETE
-// exports.deleteBuildingRoom = function (req, res) {
-//   Building.update (
-//     {},
-//     {'$pull': {'rooms': {'_id':req.params.room_id}} },
-//     function (err) {
-//       if (err)
-//         res.send(err);
-//       else
-//         res.json("exito!");
-//     }
-//     );
-// };
 
 
 exports.heartBeatCheck = function(hb) {

@@ -73,6 +73,7 @@ router.route('/appliance')
 
 router.route('/appliance/:appliance_id')
 	.get 	(authController.isAuthenticated, applianceController.getAppliance)
-	.put 	(authController.isAuthenticated, applianceController.updateAppliance);
+	.put 	(authController.isAuthenticated, applianceController.updateAppliance)
+	.delete (authController.isAuthenticated, applianceController.deleteAppliance);
 
 module.exports = router;

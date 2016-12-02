@@ -1,5 +1,6 @@
 /****************************DEPENDENCIAS Y MODULOS****************************/
 var express         = require('express');
+var app             = express();
 var path            = require('path');
 var favicon         = require('serve-favicon');
 var logger          = require('morgan');
@@ -10,11 +11,16 @@ var mongoose        = require('mongoose');
 var Agenda          = require('agenda');
 var passport        = require('passport');
 var dgram           = require('dgram');
+var udpServer       = dgram.createSocket('udp4');
+var server          = require('http').Server(app);
+var io              = require('socket.io')(server);
+
+var debug = require('debug')('nodeangular:server');
+
 // Definicion del path
 var application_root = __dirname;
 
 /****************************MODELOS****************************/
-var WIFISwitch      = require('./models/wifiswitch');
 var User            = require('./models/user');
 var Building        = require('./models/building');
 var Appliance       = require('./models/appliance');
@@ -30,9 +36,11 @@ var api             = require('./controllers/api');
 // Inicialización de la aplicación
 var Init            = require('./controllers/init');
 
+// Aplpiance Controller
+var applianceController = require('./controllers/appliance');
+
 /****************************APLICACION****************************/
  // Declaracion de la aplicacion
-var app = express();
 app.disable('x-powered-by');
  // Use the passport package in our application
 app.use(passport.initialize());
@@ -120,23 +128,112 @@ app.use(function(err, req, res, next) {
  
 
 
-var PORT = 6789;
-var broadcast_ip = '10.255.255.255';
 
 
-var server = dgram.createSocket('udp4');
 
-// server.bind(PORT, function() {
-//     server.setBroadcast(true);
-//     setInterval(broadcastNew, 3000);
-// });
+var port = normalizePort(process.env.PORT || '3333');
+app.set('port', port);
 
-// function broadcastNew() {
-//     var brmessage = new Buffer("abc1234567890");
-//     server.send(brmessage, 0, brmessage.length, PORT, broadcast_ip, function() {
-//         console.log("Sent '" + brmessage + "'");
-//     });
-// }
+
+
+io.on('connection', function(client){
+    console.log("io connection");
+  client.on('event', function(data){console.log("io EVENT" + data);});
+  client.on('disconnect', function(){console.log("io DISconnection");});
+});
+
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}
+
+
+
+
+
+
+udpServer.on('listening', function () {
+    var address = udpServer.address();
+    console.log('UDP Server listening on ' + address.address + ":" + address.port);
+});
+
+udpServer.on('message', function (message, remote) {
+    console.log(remote.address + ':' + remote.port +' - ' + message);
+    
+    try {
+        var hb = JSON.parse(message);
+        applianceController.heartBeatCheck(hb);
+    } catch (e) {
+        console.log (message);
+    }
+
+});
+
+udpServer.bind(6789);
 
 
 module.exports = app;

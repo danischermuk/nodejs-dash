@@ -14,4 +14,4 @@ var buildingSchema = new Schema({
   rooms: 		[roomSchema]
 });
 
-module.exports = mongoose.model('Building', buildingSchema);  
+module.exports = mongoose.model('Building', buildingSchema);

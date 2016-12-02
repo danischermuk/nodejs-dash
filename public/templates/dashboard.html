@@ -1,9 +1,12 @@
-<div class=" alerts-container" data-ng-controller="AlertsCtrl" data-ng-show="alerts.length">
-  <div>
-    <uib-alert data-ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
-  </div>
-</div>
-<div>
-	dashboard
-	
-</div>
+<md-content layout-padding>
+	<md-grid-list
+        md-cols-xs="1" md-cols-sm="2" md-cols-md="4" md-cols-gt-md="6"
+        md-row-height-gt-md="1:1" md-row-height="2:2"
+        md-gutter="12px" md-gutter-gt-sm="8px" >
+
+        <md-grid-tile class="green">
+
+    	</md-grid-tile>
+
+    </md-grid-list>
+</md-content>

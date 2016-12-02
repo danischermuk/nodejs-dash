@@ -12,6 +12,7 @@
 #include <EEPROM.h>
 #include <string.h>
 #include <WiFiUdp.h>
+#include <ArduinoJson.h>
 
 #include "EEPROMAnything.h"
 #include "CRC.h"
@@ -20,7 +21,7 @@
 #include "HTTPResponse.h"
 #include "WifiSwitchAPI.h"
 
-// #define DEBUG 1
+#define DEBUG 1
 #define MEDIR_TIEMPOS 1
 #define HB_PERIOD 10000
 // Create an instance of the server
@@ -31,9 +32,7 @@ WiFiUDP Udp;
 unsigned int localUdpPort = 6789;
 long lastHB = 0;
 IPAddress ip;
-char packetBuffer[255];
-char  ReplyBuffer[] = "acknowledged";       // a string to send back
-
+char myIpString[24];
 #ifdef MEDIR_TIEMPOS
 long tiempo=0;
 #endif
@@ -46,6 +45,8 @@ int charArrayLength( char* array, int max) {
 
   return i;
 }
+
+
 
 
 void setup() {
@@ -152,26 +153,38 @@ void setup() {
   Serial.println(GeneralConfig.id);
 
   
-  Udp.begin(localUdpPort);
-  lastHB = millis();
+  Udp.begin(GeneralConfig.ServerConfig.localPort);
+    
+    
+    IPAddress myIp = WiFi.localIP();
+    sprintf(myIpString, "%d.%d.%d.%d", myIp[0], myIp[1], myIp[2], myIp[3]);
 }
 
 void loop() {
-  IPAddress ip = WiFi.localIP();
-  ip[3] = 255;
+  byte ip[4];
+  int port;
+  IPcpy(ip,  GeneralConfig.ServerConfig.ip);
+  port = GeneralConfig.ServerConfig.port;
+  //Generate the JSON
+  StaticJsonBuffer<200> jsonBuffer;
+  char  message[200];
+  JsonObject& conf = jsonBuffer.createObject();
+  conf["id"]          = GeneralConfig.id;
+  conf["name"]     = GeneralConfig.DeviceName;
+  conf["type"]        = GeneralConfig.type;
+  conf["board"]       = GeneralConfig.board;
+  conf["version"]     = GeneralConfig.Version;  
+  conf["ip"]          = myIpString;
+  
+  conf.printTo(Serial);
+  Serial.println();
+  conf.printTo(message, sizeof(message));
 
+  
   // transmit broadcast package
-  Udp.beginPacket(ip, localUdpPort);
-  Udp.write("Hello 10.0.0.255\n");
+  Udp.beginPacket(ip, port);
+  Udp.write(message);
   Udp.endPacket();
-  ip = WiFi.localIP();
-  ip[3] = 55;
-
-  // transmit broadcast package
-  Udp.beginPacket(ip, localUdpPort);
-  Udp.write("Hello 10.0.0.55\n");
-  Udp.endPacket();
-  Serial.println("Enviados");
   delay(5000);
 }
 

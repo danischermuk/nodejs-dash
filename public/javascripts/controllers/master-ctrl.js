@@ -3,11 +3,14 @@
  */
 
  angular.module('RDash')
- .controller('MasterCtrl', ['$scope', '$location','$mdSidenav', '$timeout', 'userService', 'buildingService', '$mdDialog', '$state', MasterCtrl]);
+ .controller('MasterCtrl', ['$scope', '$location','$mdSidenav', '$timeout', 'userService', 'buildingService', '$mdDialog', '$state', 'socket', MasterCtrl]);
 
 
- function MasterCtrl($scope, $location, $mdSidenav, $timeout, userService, buildingService, $mdDialog, $state) {
+ function MasterCtrl($scope, $location, $mdSidenav, $timeout, userService, buildingService, $mdDialog, $state, socket) { 
   console.log("master ctrl open");
+
+  socket.emit('event', "eventooooo");
+
   $scope.current       = {};
 
   $scope.hide = function() {

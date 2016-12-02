@@ -1,5 +1,5 @@
 angular.module('RDash')
-.controller('RoomCtrl', ['$scope', 'buildings', 'building', 'room', '$location','$mdSidenav', '$timeout', 'userService', 'buildingService', '$mdDialog', '$stateParams', RoomCtrl]);
+.controller('RoomCtrl', ['$scope', 'buildings', 'building', 'room', '$location','$mdSidenav', '$timeout', 'userService', 'buildingService', '$mdDialog', '$stateParams',  RoomCtrl]);
 
 
 function RoomCtrl($scope, buildings, building, room, $location, $mdSidenav, $timeout, userService, buildingService,  $mdDialog, $stateParams) {
@@ -12,7 +12,7 @@ function RoomCtrl($scope, buildings, building, room, $location, $mdSidenav, $tim
 	$scope.currentAppliance		= {};
 	$scope.edit					= false;
 	$scope.delete				= false;
-	
+
 	console.log($scope.current.room);
 
 	$scope.cancelDialog = function() {

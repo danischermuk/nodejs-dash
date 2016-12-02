@@ -5,6 +5,7 @@ var Building  = mongoose.model('Building');
 var User      = mongoose.model('User');
 var Appliance = mongoose.model('Appliance');
 
+
 // Create endpoint /api/building/ for GET
 exports.getBuildings = function(req, res) {
   // Find all Buildings

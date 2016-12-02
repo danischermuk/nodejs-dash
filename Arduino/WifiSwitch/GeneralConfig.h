@@ -18,6 +18,9 @@
 #define   DEVICE_NAME_MAX_LENGTH  16
 #define   SSID_MAX_LENGTH         16
 #define   PASS_MAX_LENGTH         16
+#define   TYPE_MAX_LENGTH         16
+#define   BOARD_MAX_LENGTH        16
+
 
 #define   SSID_DEFAULT    "Sucred"
 #define   PASS_DEFAULT    "ingeniero2012"
@@ -26,14 +29,21 @@
 
 #define   DEVICE_NAME_DEFAULT "WIFISWITCH"
 
+#define   TYPE_DEFAULT      "switch"
+
+
 const byte IP_DEFAULT[]           {10,  0,    0,    159};
 const byte GATEWAY_DEFAULT[]      {10,  0,    0,    2};
 const byte SUBNET_DEFAULT[]       {255, 255,  255,  0};
 
+const byte SERVER_IP_DEFAULT[]    {10,  0,    0,    55};
+#define SERVER_PORT_DEFAULT     6789
+#define LOCAL_PORT_DEFAULT     6789
+
 typedef struct GpioState_t
 {
     byte      pinNumber;
-    int      state;
+    int       state;
 };
 
 typedef struct Wificonfig_t
@@ -46,13 +56,26 @@ typedef struct Wificonfig_t
     bool      dhcp;
 };
 
+typedef struct Serverconfig_t
+{
+    byte      ip[4];
+    int       port;
+    int       localPort;
+};
+
 typedef struct GeneralConfig_t
 {
       byte            Version = GENERALCONFIG_VERSION;
+      char            board[BOARD_MAX_LENGTH];
+      char            type[TYPE_MAX_LENGTH];
       unsigned long   id;
       Wificonfig_t    WifiConfig;
+      Serverconfig_t  ServerConfig;
       char            DeviceName[DEVICE_NAME_MAX_LENGTH];
-      // EL CRC TIENE QUE SER EL ULTIMO ATRIBUTO
+
+
+      
+      //*****************************************EL CRC TIENE QUE SER EL ULTIMO ATRIBUTO************************************//
       unsigned long   crc;
 };
 
@@ -96,6 +119,10 @@ void GeneralConfig_LoadDefaults (void)
 {
   // VERSION
   GeneralConfig.Version = GENERALCONFIG_VERSION;
+  //BOARD
+  strncpy(GeneralConfig.board, BOARD_MODEL, BOARD_MAX_LENGTH);
+  // TYPE
+  strncpy(GeneralConfig.type, TYPE_DEFAULT, TYPE_MAX_LENGTH);
   // ID
   GeneralConfig.id = ESP.getChipId();
   // CONFIGURACION WIFI
@@ -105,6 +132,10 @@ void GeneralConfig_LoadDefaults (void)
   IPcpy(GeneralConfig.WifiConfig.gateway, GATEWAY_DEFAULT);
   IPcpy(GeneralConfig.WifiConfig.subnet,  SUBNET_DEFAULT);
   GeneralConfig.WifiConfig.dhcp = DHCP_DEFAULT;
+  // CONFIGURACION DEL SERVER
+  IPcpy(GeneralConfig.ServerConfig.ip,      SERVER_IP_DEFAULT);
+  GeneralConfig.ServerConfig.port = SERVER_PORT_DEFAULT;
+  GeneralConfig.ServerConfig.localPort = LOCAL_PORT_DEFAULT;
   // DEVICE NAME
   strncpy(GeneralConfig.DeviceName, DEVICE_NAME_DEFAULT, DEVICE_NAME_MAX_LENGTH);
   // CRC

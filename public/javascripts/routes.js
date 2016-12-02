@@ -40,12 +40,10 @@
             resolve: {
                 buildings: ['buildingService',
                 function(buildingService) {
-
                     return buildingService.getBuildings();
                 }],
                 building: ['$stateParams', 'buildingService',
                 function($stateParams, buildingService) {
-
                     return buildingService.getBuilding($stateParams.buildingId);
                 }],
                 room: ['$stateParams', 'buildingService',

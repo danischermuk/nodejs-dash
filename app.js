@@ -233,7 +233,8 @@ udpServer.on('message', function (message, remote) {
 
 });
 
-udpServer.bind(6789);
-
+udpServer.bind(6789, () => {
+    udpServer.setBroadcast(true);
+});
 
 module.exports = app;

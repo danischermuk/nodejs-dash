@@ -11,7 +11,7 @@
 
 #define   BOARD_MODEL "ESP8266-01"
 
-#define   GPIO_QTY    2
+#define   GPIO_QTY    1
 
 #define   GENERALCONFIG_EEPROM_ADDR   0
 
@@ -82,7 +82,7 @@ typedef struct GeneralConfig_t
 // DEFINO LA VARIABLE DE CONFIGURACION
 GeneralConfig_t GeneralConfig;
 // Defino la variable de estado de los pines
-GpioState_t gpioState[GPIO_QTY] = {{0,0},{2,0}};
+GpioState_t gpioState[GPIO_QTY] = {{2,0}};
 
 
 int gpioGetState (GpioState_t gpio)

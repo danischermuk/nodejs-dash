@@ -13,11 +13,11 @@ const String HTTP_CONTENT_LENGTH = "Content-Length:";
 
 const String HTTPRequestLineCode[] = {
   "200 OK",
-  "400 BAD_REQUEST",
+  "400 BAD REQUEST",
   "401 UNAUTHORIZED",
   "403 FORBIDDEN",
-  "404 NOT_FOUND",
-  "500 INTERNAL_SERVER_ERROR"
+  "404 NOT FOUND",
+  "500 INTERNAL SERVER ERROR"
 };
 
 typedef enum HTTPResponseType_t {

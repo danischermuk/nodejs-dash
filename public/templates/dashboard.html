@@ -4,8 +4,9 @@
         md-row-height-gt-md="1:1" md-row-height="2:2"
         md-gutter="12px" md-gutter-gt-sm="8px" >
 
-        <md-grid-tile class="green">
-
+        <md-grid-tile style="background:#b9f6ca;" ng-repeat="appliance in appliances">
+        <p> {{appliance.name}} </p>
+        <md-switch ng-model="data.cb1" aria-label="Switch 1"></md-switch>
     	</md-grid-tile>
 
     </md-grid-list>

@@ -118,6 +118,19 @@ exports.heartBeatCheck = function(hb) {
           });
       }
       else {
+        //TODO: buscar cambios de ip o nombre o algo que sea importante....
+              if(hb.ip != appliance.ip)
+              {
+                appliance.ip = hb.ip;
+                appliance.save(function(err) {
+            if (err) {
+              console.log(err);
+            }
+            else
+              console.log({ message: 'appliance updated db!', data: appliance });
+          });
+                
+              }
         console.log(appliance.name + " HeartBeat OK");
       }
 

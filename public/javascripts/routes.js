@@ -20,7 +20,13 @@
                 function(buildingService) {
 
                     return buildingService.getBuildings();
+                }],
+                appliances: ['applianceService',
+                function(applianceService) {
+
+                    return applianceService.getAppliances();
                 }]
+
             },
 
             controller: 'DashCtrl'

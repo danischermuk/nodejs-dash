@@ -22,7 +22,6 @@
 #include "WifiSwitchAPI.h"
 
 #define DEBUG 1
-#define MEDIR_TIEMPOS 1
 #define HB_PERIOD 10000
 // Create an instance of the server
 // specify the port to listen on as an argument
@@ -103,8 +102,8 @@ void setup() {
   Udp.begin(GeneralConfig.ServerConfig.localPort);
     
     
-    IPAddress myIp = WiFi.localIP();
-    sprintf(myIpString, "%d.%d.%d.%d", myIp[0], myIp[1], myIp[2], myIp[3]);
+  IPAddress myIp = WiFi.localIP();
+  sprintf(myIpString, "%d.%d.%d.%d", myIp[0], myIp[1], myIp[2], myIp[3]);
 }
 
 void loop() {
@@ -117,7 +116,7 @@ void loop() {
   char  message[200];
   JsonObject& conf = jsonBuffer.createObject();
   conf["id"]          = GeneralConfig.id;
-  conf["name"]     = GeneralConfig.DeviceName;
+  conf["name"]        = GeneralConfig.DeviceName;
   conf["type"]        = GeneralConfig.type;
   conf["board"]       = GeneralConfig.board;
   conf["version"]     = GeneralConfig.Version;  
@@ -127,13 +126,10 @@ void loop() {
   Serial.println();
   conf.printTo(message, sizeof(message));
   
-  
   // transmit broadcast package
   Udp.beginPacket(ip, port);
   Udp.write(message);
   Udp.endPacket();
-
-  
   delay(5000);
 }
 

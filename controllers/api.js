@@ -76,4 +76,7 @@ router.route('/appliance/:appliance_id')
 	.put 	(authController.isAuthenticated, applianceController.updateAppliance)
 	.delete (authController.isAuthenticated, applianceController.deleteAppliance);
 
+router.route('/appliance/switch')
+	.post 	(authController.isAuthenticated, applianceController.switchAppliance);
+
 module.exports = router;

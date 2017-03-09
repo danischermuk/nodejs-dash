@@ -1,5 +1,6 @@
 // Modules
 var mongoose  = require('mongoose');
+var http      = require('http');
 // MongoDB models
 var Building  = mongoose.model('Building');
 var User      = mongoose.model('User');
@@ -87,9 +88,6 @@ exports.deleteAppliance = function(req, res) {
   });
 };
 
-
-
-
 exports.heartBeatCheck = function(hb) {
   Appliance
   .findOne({chipIdkey: hb.id})
@@ -136,4 +134,38 @@ exports.heartBeatCheck = function(hb) {
 
     }
   });
+};
+
+// Create endpoint /api/appliance/switch for POSTS
+exports.switchAppliance = function(req, res) {
+  var ip        = req.body.ip;
+  var state     = req.body.state;
+  var pathState;
+
+  if (state == 'on')
+    pathState = '/gpio/1'
+  else if (state == 'off')
+    pathState = '/gpio/0'
+  else if (state == 'toggle')
+    pathState = '/gpio/toggle'
+
+
+  http.get({
+    host: ip,
+    path: pathState
+  }, function(response) {
+        // Continuously update stream with data
+        var body = '';
+        response.on('data', function(d) {
+          body += d;
+        });
+        response.on('end', function() {
+
+            // Data reception is done, do whatever with it!
+            
+            res.json(body);
+          });
+      });
+
+  
 };

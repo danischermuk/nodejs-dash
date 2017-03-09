@@ -107,29 +107,77 @@ void setup() {
 }
 
 void loop() {
-  byte ip[4];
-  int port;
-  IPcpy(ip,  GeneralConfig.ServerConfig.ip);
-  port = GeneralConfig.ServerConfig.port;
-  //Generate the JSON
-  StaticJsonBuffer<200> jsonBuffer;
-  char  message[200];
-  JsonObject& conf = jsonBuffer.createObject();
-  conf["id"]          = GeneralConfig.id;
-  conf["name"]        = GeneralConfig.DeviceName;
-  conf["type"]        = GeneralConfig.type;
-  conf["board"]       = GeneralConfig.board;
-  conf["version"]     = GeneralConfig.Version;  
-  conf["ip"]          = myIpString;
+//  byte ip[4];
+//  int port;
+//  IPcpy(ip,  GeneralConfig.ServerConfig.ip);
+//  port = GeneralConfig.ServerConfig.port;
+//  //Generate the JSON
+//  StaticJsonBuffer<200> jsonBuffer;
+//  char  message[200];
+//  JsonObject& conf = jsonBuffer.createObject();
+//  conf["id"]          = GeneralConfig.id;
+//  conf["name"]        = GeneralConfig.DeviceName;
+//  conf["type"]        = GeneralConfig.type;
+//  conf["board"]       = GeneralConfig.board;
+//  conf["version"]     = GeneralConfig.Version;  
+//  conf["ip"]          = myIpString;
+//  
+//  conf.printTo(Serial);
+//  Serial.println();
+//  conf.printTo(message, sizeof(message));
+//  
+//  // transmit broadcast package
+//  Udp.beginPacket(ip, port);
+//  Udp.write(message);
+//  Udp.endPacket();
+
+ // Check if a client has connected
+  WiFiClient client = server.available();
+  if (!client) {
+    return;
+  }
   
-  conf.printTo(Serial);
-  Serial.println();
-  conf.printTo(message, sizeof(message));
-  
-  // transmit broadcast package
-  Udp.beginPacket(ip, port);
-  Udp.write(message);
-  Udp.endPacket();
-  delay(5000);
+  // Wait until the client sends some data
+  while(!client.available()){
+    delay(1);
+  }
+
+  static int val = 0;
+  String content = "";
+  // Read the first line of the request
+  String req = client.readStringUntil('\r');
+  // Ver si es un GET o un POST
+  if (strncmp(req.c_str(), "GET", 3)==0)
+  {
+    Serial.println(req);
+    // Es un GET, no necesito info adicional
+    client.flush();
+    // Procedo con la API
+    // TODO: separar el manejo de la API
+    if (req.indexOf("/gpio/0") != -1)
+      val = 0;
+    else if (req.indexOf("/gpio/1") != -1)
+      val = 1;
+    else if (req.indexOf("/gpio/toggle") != -1)
+      val = (val)? 0:1;
+    else {
+      Serial.println("invalid request");
+      client.stop();
+      return;
+    }
+    // Set GPIO2 according to the request
+    digitalWrite(2, val);
+  }
+  else if (strncmp(req.c_str(), "POST", 4)==0)
+  {
+    req = client.readString();
+    content = ParseContent(&req);
+    Serial.println(content);
+    client.flush();
+  }
+
+  HTTPSendResponse (&client, OK_200, &content);
+  client.flush();
+ 
 }
 

@@ -14,9 +14,7 @@ var dgram           = require('dgram');
 var udpServer       = dgram.createSocket('udp4');
 var server          = require('http').Server(app);
 var io              = require('socket.io')(server);
-
 var debug = require('debug')('nodeangular:server');
-
 // Definicion del path
 var application_root = __dirname;
 
@@ -36,6 +34,8 @@ var api             = require('./controllers/api');
 // Inicialización de la aplicación
 var Init            = require('./controllers/init');
 
+var emitIO            = require('./controllers/emitIO');
+emitIO.init(io);
 // Aplpiance Controller
 var applianceController = require('./controllers/appliance');
 
@@ -135,13 +135,12 @@ var port = normalizePort(process.env.PORT || '3333');
 app.set('port', port);
 
 
-
 io.on('connection', function(client){
-    console.log("io connection");
-  client.on('event', function(data){console.log("io EVENT" + data);});
+  console.log("io connection");
+  client.on('event', function(data){console.log("io EVENT" + data);client.emit('messages', 'mensaje del socket');});
   client.on('disconnect', function(){console.log("io DISconnection");});
-});
 
+});
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -236,5 +235,6 @@ udpServer.on('message', function (message, remote) {
 udpServer.bind(6789, () => {
     udpServer.setBroadcast(true);
 });
+
 
 module.exports = app;

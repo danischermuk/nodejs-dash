@@ -138,5 +138,12 @@ app.factory('applianceService', ['$http', function($http) {
     // buildingService.insertBuildingRoom = function (id, room) {
     //     return $http.post(urlBase + '/' + id + '/r', room);
     // };
+
+    applianceService.switchAppliance = function(cust) {
+        console.log("SwithAppliance Service");
+        console.log(cust);
+        return $http.post(urlBase + '/switch', cust);
+    }
+
     return applianceService;
 }]);

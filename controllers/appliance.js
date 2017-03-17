@@ -1,10 +1,13 @@
 // Modules
 var mongoose  = require('mongoose');
 var http      = require('http');
+
 // MongoDB models
 var Building  = mongoose.model('Building');
 var User      = mongoose.model('User');
 var Appliance = mongoose.model('Appliance');
+
+var emitIO = require('../controllers/emitIO');
 
 // Create endpoint /api/appliance/ for GET
 exports.getAppliances = function(req, res) {
@@ -142,13 +145,23 @@ exports.switchAppliance = function(req, res) {
   var state     = req.body.state;
   var pathState;
 
-  if (state == 'on')
-    pathState = '/gpio/1'
-  else if (state == 'off')
-    pathState = '/gpio/0'
-  else if (state == 'toggle')
-    pathState = '/gpio/toggle'
+  console.log("Swithc Appliance Controller");
+  console.log(req.body);
 
+  if (state == true)
+    pathState = '/gpio/1';
+  else if (state == false)
+    pathState = '/gpio/0';
+  else if (state == 'toggle')
+    pathState = '/gpio/toggle';
+  else
+    return;
+
+  console.log("variables");
+  console.log(ip);
+  console.log(pathState);
+
+  emitIO.send('appliance-switch', req.body);
 
   http.get({
     host: ip,
@@ -160,9 +173,7 @@ exports.switchAppliance = function(req, res) {
           body += d;
         });
         response.on('end', function() {
-
             // Data reception is done, do whatever with it!
-            
             res.json(body);
           });
       });

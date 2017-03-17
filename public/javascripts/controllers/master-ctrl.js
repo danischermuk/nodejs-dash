@@ -10,6 +10,10 @@
   console.log("master ctrl open");
 
   socket.emit('event', "eventooooo");
+  socket.on('messages', function(data) {  
+    console.log(data);
+  });
+
 
   $scope.current       = {};
 

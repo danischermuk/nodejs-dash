@@ -180,3 +180,35 @@ exports.switchAppliance = function(req, res) {
 
   
 };
+
+exports.toggleApplianceLocal = function(appliance) {
+  var ip        = appliance.ip;
+  var state     = appliance.state;
+  var pathState;
+
+  console.log("Swithc Appliance Toggle");
+  console.log(appliance);
+
+  pathState = '/gpio/toggle';
+  
+  console.log("variables");
+  console.log(ip);
+  console.log(pathState);
+
+  http.get({
+    host: ip,
+    path: pathState
+  }, function(response) {
+        // Continuously update stream with data
+        var body = '';
+        response.on('data', function(d) {
+          body += d;
+        });
+        response.on('end', function() {
+            // Data reception is done, do whatever with it!
+            console.log(body);
+          });
+      });
+
+  emitIO.send('appliance-switch', appliance);
+};

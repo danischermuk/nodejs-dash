@@ -7,7 +7,8 @@ var applianceSchema = new Schema({
   type:  		String,
   board: 		String, 
   online:  		Boolean,
-  chipIdkey:    {type:String, unique:true, required:true}
+  chipIdkey:    {type:String, unique:true, required:true},
+  state: 		Boolean
   //TODO: incluir la configuracion de alguna forma
 });
 

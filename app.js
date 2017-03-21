@@ -77,6 +77,12 @@ agenda.define('greet the world', function(job, done) {
   done();
 });
 
+agenda.define('toggle', function(job, done) {
+  applianceController.toggleApplianceLocal(job.attrs.data);
+  console.log('toggle!');
+  done();
+});
+
 agenda.define('view jobs', function(job, done) {
 	agenda.jobs({}, function(err, jobs) {
 	  console.log(jobs);
@@ -85,13 +91,21 @@ agenda.define('view jobs', function(job, done) {
 });
 
 agenda.on('ready', function() {
-	agenda.cancel({}, function(err, numRemoved) {
-	});
-/* 	agenda.every('10 seconds', 'greet the world', {num: 0});	
+	agenda.cancel({}, function(err, numRemoved) {});
+ 	// agenda.every('10 seconds', 'greet the world', {num: 0});
+  // agenda.every('1 seconds', 'toggle', {
+  //   "_id": "589229eeac47012780b39695",
+  //   "name": "WIFISWITCH",
+  //   "ip": "10.0.0.159",
+  //   "type": "switch",
+  //   "online": true,
+  //   "chipIdkey": "13734034",
+  //   "__v": 0
+  // });
 	agenda.start();
 	agenda.jobs({}, function(err, jobs) {
 	  console.log(jobs);
-	}); */
+	});
 	
 });
 

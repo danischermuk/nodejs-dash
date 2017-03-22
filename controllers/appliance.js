@@ -1,13 +1,14 @@
 // Modules
-var mongoose  = require('mongoose');
-var http      = require('http');
+var mongoose        = require('mongoose');
+var http            = require('http');
+var emitIO          = require('../controllers/emitIO');
 
 // MongoDB models
-var Building  = mongoose.model('Building');
-var User      = mongoose.model('User');
-var Appliance = mongoose.model('Appliance');
+var Building        = mongoose.model('Building');
+var User            = mongoose.model('User');
+var Appliance       = mongoose.model('Appliance');
 
-var emitIO = require('../controllers/emitIO');
+
 
 // Create endpoint /api/appliance/ for GET
 exports.getAppliances = function(req, res) {
@@ -139,14 +140,15 @@ exports.heartBeatCheck = function(hb) {
   });
 };
 
-// Create endpoint /api/appliance/switch for POSTS
-exports.switchAppliance = function(req, res) {
-  var ip        = req.body.ip;
-  var state     = req.body.state;
+
+  exports.switchApplianceLocal = function(appliance) {
+  var ip        = appliance.ip;
+  var state     = appliance.state;
+
   var pathState;
 
-  console.log("Swithc Appliance Controller");
-  console.log(req.body);
+  console.log("Swithc Appliance SwitchLocal");
+  console.log(appliance);
 
   if (state == true)
     pathState = '/gpio/1';
@@ -155,42 +157,11 @@ exports.switchAppliance = function(req, res) {
   else if (state == 'toggle')
     pathState = '/gpio/toggle';
   else
+  {
+    console.log("ERROR!! Invalid State to be switched")
     return;
+  }
 
-  console.log("variables");
-  console.log(ip);
-  console.log(pathState);
-
-  emitIO.send('appliance-switch', req.body);
-
-  http.get({
-    host: ip,
-    path: pathState
-  }, function(response) {
-        // Continuously update stream with data
-        var body = '';
-        response.on('data', function(d) {
-          body += d;
-        });
-        response.on('end', function() {
-            // Data reception is done, do whatever with it!
-            res.json(body);
-          });
-      });
-
-  
-};
-
-exports.toggleApplianceLocal = function(appliance) {
-  var ip        = appliance.ip;
-  var state     = appliance.state;
-  var pathState;
-
-  console.log("Swithc Appliance Toggle");
-  console.log(appliance);
-
-  pathState = '/gpio/toggle';
-  
   console.log("variables");
   console.log(ip);
   console.log(pathState);
@@ -206,9 +177,57 @@ exports.toggleApplianceLocal = function(appliance) {
         });
         response.on('end', function() {
             // Data reception is done, do whatever with it!
-            console.log(body);
+            return body;
           });
       });
 
   emitIO.send('appliance-switch', appliance);
 };
+
+// Create endpoint /api/appliance/switch for POSTS
+exports.switchAppliance = function(req, res) {
+//   var ip        = req.body.ip;
+//   var state     = req.body.state;
+//   var pathState;
+
+//   console.log("Swithc Appliance Controller");
+//   console.log(req.body);
+
+//   if (state == true)
+//     pathState = '/gpio/1';
+//   else if (state == false)
+//     pathState = '/gpio/0';
+//   else if (state == 'toggle')
+//     pathState = '/gpio/toggle';
+//   else
+//     return;
+
+//   console.log("variables");
+//   console.log(ip);
+//   console.log(pathState);
+
+//   emitIO.send('appliance-switch', req.body);
+
+//   http.get({
+//     host: ip,
+//     path: pathState
+//   }, function(response) {
+//         // Continuously update stream with data
+//         var body = '';
+//         response.on('data', function(d) {
+//           body += d;
+//         });
+//         response.on('end', function() {
+//             // Data reception is done, do whatever with it!
+//             res.json(body);
+//           });
+//       });
+  
+  console.log("swtchAppliance");
+  console.log(req.body);
+  var response;
+  response = module.exports.switchApplianceLocal(req.body);
+  res.json(response);
+};
+
+

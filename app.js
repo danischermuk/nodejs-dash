@@ -24,7 +24,6 @@ var Building        = require('./models/building');
 var Appliance       = require('./models/appliance');
 var ApplianceGroup  = require('./models/ApplianceGroup');
 
-
 // Route del index
 var routes          = require('./routes/index');
 
@@ -78,7 +77,7 @@ agenda.define('greet the world', function(job, done) {
 });
 
 agenda.define('toggle', function(job, done) {
-  applianceController.toggleApplianceLocal(job.attrs.data);
+  applianceController.switchApplianceLocal(job.attrs.data);
   console.log('toggle!');
   done();
 });
@@ -99,6 +98,7 @@ agenda.on('ready', function() {
   //   "ip": "10.0.0.159",
   //   "type": "switch",
   //   "online": true,
+  //   "state": "toggle",
   //   "chipIdkey": "13734034",
   //   "__v": 0
   // });

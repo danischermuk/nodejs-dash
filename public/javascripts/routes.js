@@ -31,6 +31,18 @@
 
             controller: 'DashCtrl'
         })
+        .state('schedule', {
+            url: '/schedule',
+            templateUrl: 'templates/schedule.html',
+            controller: 'ScheduleCtrl',
+            resolve: {
+                jobs: ['agendaService',
+                function(agendaService) {
+
+                    return agendaService.getJobs();
+                }]
+            }
+        })
         .state('tables', {
             url: '/tables',
             templateUrl: 'templates/tables.html'

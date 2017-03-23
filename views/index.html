@@ -31,6 +31,7 @@
   <script type="text/javascript" src="javascripts/controllers/room-ctrl.js"></script>
   <script type="text/javascript" src="javascripts/controllers/building-ctrl.js"></script>
   <script type="text/javascript" src="javascripts/controllers/dash-ctrl.js"></script>
+  <script type="text/javascript" src="javascripts/controllers/schedule-ctrl.js"></script>
 
 </head>
 <body ng-controller="MasterCtrl">
@@ -51,6 +52,11 @@
 			<md-list-item  ng-click="go('index')">
 				<p> {{ dashboard.name }} </p>
 				<md-icon md-svg-icon="{{dashboard.iconUrl}}" ></md-icon>
+			</md-list-item>
+		<!-- Boton del SCHEDULE -->
+			<md-list-item  ng-click="go('schedule')">
+				<p> {{ schedule.name }} </p>
+				<md-icon md-svg-icon="{{schedule.iconUrl}}" ></md-icon>
 			</md-list-item>
 		<!-- BUILDINGS con sus ROOMS -->
 			<md-divider ng-repeat="building in current.buildings">

@@ -119,7 +119,13 @@ $scope.showBuilding = function (building) {
     "url":    "/#",
     "type":   "item",
     "iconUrl":  "/images/dash.svg",             
-  };
+    };
+
+    $scope.schedule = {  "name":   "Schedule",
+    "url":    "/#",
+    "type":   "item",
+    "iconUrl":  "/images/alarm.svg",             
+    };
 
   $scope.rooms =    {
     "name":   "Building1",

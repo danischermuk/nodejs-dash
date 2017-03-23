@@ -2,7 +2,7 @@
 var mongoose        = require('mongoose');
 var http            = require('http');
 var emitIO          = require('../controllers/emitIO');
-
+var agenda          = require('../controllers/agenda');
 // MongoDB models
 var Building        = mongoose.model('Building');
 var User            = mongoose.model('User');
@@ -53,7 +53,13 @@ exports.getAppliance = function(req, res) {
     if (err)
       res.send(err);
     else
+    {
+      var params = {};
+      params.when = new Date(2017, 2, 23, 12, 34, 0, 0);
+      params.state = true;
+      agenda.scheduleEvent(appliance, params);
       res.json(appliance);
+    }
   });
 };
 
@@ -186,43 +192,6 @@ exports.heartBeatCheck = function(hb) {
 
 // Create endpoint /api/appliance/switch for POSTS
 exports.switchAppliance = function(req, res) {
-//   var ip        = req.body.ip;
-//   var state     = req.body.state;
-//   var pathState;
-
-//   console.log("Swithc Appliance Controller");
-//   console.log(req.body);
-
-//   if (state == true)
-//     pathState = '/gpio/1';
-//   else if (state == false)
-//     pathState = '/gpio/0';
-//   else if (state == 'toggle')
-//     pathState = '/gpio/toggle';
-//   else
-//     return;
-
-//   console.log("variables");
-//   console.log(ip);
-//   console.log(pathState);
-
-//   emitIO.send('appliance-switch', req.body);
-
-//   http.get({
-//     host: ip,
-//     path: pathState
-//   }, function(response) {
-//         // Continuously update stream with data
-//         var body = '';
-//         response.on('data', function(d) {
-//           body += d;
-//         });
-//         response.on('end', function() {
-//             // Data reception is done, do whatever with it!
-//             res.json(body);
-//           });
-//       });
-  
   console.log("swtchAppliance");
   console.log(req.body);
   var response;

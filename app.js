@@ -68,9 +68,10 @@ Init.initUsers  ();
 Init.initBuilding();
 
 
-var agenda = new Agenda({db: {address: 'localhost:27017/agenda-example'}});
+var agenda      = new Agenda({db: {address: 'localhost:27017/agenda-example'}});
+exports.agenda  = agenda;
 
-agenda.define('greet the world', function(job, done) {
+agenda.define('greet the world1', function(job, done) {
 	job.attrs.data.num = job.attrs.data.num+1;
   console.log(job.attrs.data.num, 'hello world!');
   done();
@@ -79,10 +80,14 @@ agenda.define('greet the world', function(job, done) {
 agenda.define('toggle', function(job, done) {
   applianceController.switchApplianceLocal(job.attrs.data);
   console.log('toggle!');
+  agenda.jobs({}, function(err, jobs) {
+    console.log(jobs);
+  });
   done();
 });
 
 agenda.define('view jobs', function(job, done) {
+  console.log("JOBS DE AGENDA");
 	agenda.jobs({}, function(err, jobs) {
 	  console.log(jobs);
 	});
@@ -90,7 +95,9 @@ agenda.define('view jobs', function(job, done) {
 });
 
 agenda.on('ready', function() {
-	agenda.cancel({}, function(err, numRemoved) {});
+	agenda.cancel({}, function(err, numRemoved) {
+    console.log(numRemoved + " Removed from Agenda");
+  });
  	// agenda.every('10 seconds', 'greet the world', {num: 0});
   // agenda.every('1 seconds', 'toggle', {
   //   "_id": "589229eeac47012780b39695",
@@ -102,10 +109,34 @@ agenda.on('ready', function() {
   //   "chipIdkey": "13734034",
   //   "__v": 0
   // });
-	agenda.start();
-	agenda.jobs({}, function(err, jobs) {
-	  console.log(jobs);
-	});
+
+  var when = new Date(2017, 2, 23, 11, 52, 30, 0);
+  //console.log(when.toJSON());
+
+  // agenda.schedule(when, 'toggle', {
+  //   "_id": "589229eeac47012780b39695",
+  //   "name": "WIFISWITCH",
+  //   "ip": "10.0.0.159",
+  //   "type": "switch",
+  //   "online": true,
+  //   "state": "toggle",
+  //   "chipIdkey": "13734034",
+  //   "label": "this came from AGENDAAAAAAAAA",
+  //   "__v": 0
+  // });
+
+  
+
+  // agenda.schedule('in 5 seconds', 'view jobs',{});
+  //agenda.schedule(when, 'greet the world1', {num: 1});
+
+
+
+  agenda.start();
+  
+  agenda.jobs({}, function(err, jobs) {
+    console.log(jobs);
+  });
 	
 });
 

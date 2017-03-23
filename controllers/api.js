@@ -6,7 +6,7 @@ var authController 		= require('./auth');
 var userController 		= require('./user');
 var buildingController 	= require('./building');
 var applianceController = require('./appliance');
-
+var agendaAPIController = require('./api/agenda');
 
 // Define Routes
 
@@ -78,5 +78,14 @@ router.route('/appliance/:appliance_id')
 
 router.route('/appliance/switch')
 	.post 	(authController.isAuthenticated, applianceController.switchAppliance);
+
+/**********************************************************
+						AGENDA API
+***********************************************************/
+
+router.route('/agenda')
+	.get 	(authController.isAuthenticated, agendaAPIController.getJobsAPI);
+
+
 
 module.exports = router;
